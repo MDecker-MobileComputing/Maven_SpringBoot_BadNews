@@ -1,0 +1,35 @@
+body {
+    font-family: sans-serif;
+    padding: 1em;
+}
+
+h1 {
+    margin-bottom: 1.5em;
+}
+
+a {
+    margin-bottom: 1em;
+}
+
+ul li {
+    margin-bottom: 20px;
+}
+
+.fett {
+    font-weight: bold;
+}
+
+.kursiv {
+    font-style: italic;
+}
+
+.klein {
+    font-size: 0.75em;
+}
+
+.abstand_unten {
+    margin-bottom: 2.5em;
+}
+.abstand_oben {
+    margin-top: 1em;
+}
