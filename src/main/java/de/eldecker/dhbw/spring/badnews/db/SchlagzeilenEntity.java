@@ -64,7 +64,7 @@ public class SchlagzeilenEntity {
     public SchlagzeilenEntity( String schlagzeile, boolean inland ) {
         
         this.schlagzeile = schlagzeile;
-        this.inland      = true;
+        this.inland      = inland;
     }
     
     

@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 /**
- * Klasse mit Einstiegsmethode.
+ * Klasse mit Einstiegsmethode, kann im Debugger ausgeführt werden.
  */
 @SpringBootApplication
 public class BadNewsApplication {

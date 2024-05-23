@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenRepo;
 
 
@@ -21,18 +22,23 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
     private final static Logger LOG = LoggerFactory.getLogger( DatenImporterApplicationRunner.class ); 
 
     /** Anzahl der Schlagzeilen die in eine ganz leere Schlagzeilentabelle einzufügen ist. */
-    public static final int ANZAHL_SCHLAGZEILEN = 1_000;
+    public static final int ANZAHL_SCHLAGZEILEN = 5_000;
     
     /** Repo-Bean für Zugriff auf Tabelle mit den Schlagzeilen. */
     private SchlagzeilenRepo _schlagzeilenRepo;
+    
+    /** Service-Bean zur Erzeugung von zufälligen Negativschlagzeilen. */
+    private SchlagzeilenErzeuger _schlagzeilenErzeugen;
 
     
     /**
      * Konstruktor für <i>Dependency Injection</i>.
      */
-    public DatenImporterApplicationRunner( SchlagzeilenRepo  schlagzeilenRepo ) {
+    public DatenImporterApplicationRunner( SchlagzeilenRepo  schlagzeilenRepo, 
+                                           SchlagzeilenErzeuger schlagzeilenErzeuegen ) {
     
-        _schlagzeilenRepo = schlagzeilenRepo;
+        _schlagzeilenRepo     = schlagzeilenRepo;
+        _schlagzeilenErzeugen = schlagzeilenErzeuegen;
     }
     
     
@@ -53,7 +59,17 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
         } else {
             
             LOG.warn( "Datenbank enthält überhaupt keine Schlagzeilen, werde {} Schlagzeilen erzeugen.", 
-                      ANZAHL_SCHLAGZEILEN );                         
+                      ANZAHL_SCHLAGZEILEN );      
+            
+            final SchlagzeilenEntity[] entityArray = 
+                    _schlagzeilenErzeugen.erzeugetZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
+            
+            for ( int i = 0; i < entityArray.length; i++ ) {
+                
+                _schlagzeilenRepo.save( entityArray[i] );
+            }
+            
+            LOG.warn( "Zufällige Schlagzeilen erzeugt und in DB gespeichert." ); 
         }
     }    
     
