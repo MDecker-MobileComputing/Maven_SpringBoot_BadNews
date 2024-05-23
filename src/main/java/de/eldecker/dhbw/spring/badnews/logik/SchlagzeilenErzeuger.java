@@ -1,5 +1,10 @@
 package de.eldecker.dhbw.spring.badnews.logik;
 
+import static java.util.Collections.emptyList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -127,24 +132,27 @@ public class SchlagzeilenErzeuger {
      * 
      * @param anzahl Anzahl der zu erzeugenden Schlagzeilen, muss echt-größer 0 sein.
      * 
-     * @return Array mit Schlagzeilen, ist nicht {@code null}
+     * @return Liste mit Schlagzeilen, kann leer sein aber nicht {@code null}
      */
-    public SchlagzeilenEntity[] erzeugetZufallsSchlagzeilen( int anzahl ) {
+    public List<SchlagzeilenEntity> erzeugetZufallsSchlagzeilen( int anzahl ) {
         
         if ( anzahl < 1 ) {
             
             LOG.warn( "Erzeugung von {} Schlagzeilen angefordert.", anzahl );
-            return new SchlagzeilenEntity[0];
+            return emptyList();
         }
+        
+        final List<SchlagzeilenEntity> ergebnisListe = new ArrayList<>( anzahl );
         
         final SchlagzeilenEntity[] ergebnisArray = new SchlagzeilenEntity[ anzahl ];
         
         for ( int i = 0 ; i < ergebnisArray.length; i++ ) {
             
-            ergebnisArray[ i ] = erzeugeZufallsSchlagzeile();
+            final SchlagzeilenEntity entity = erzeugeZufallsSchlagzeile();
+            ergebnisListe.add( entity );
         }
         
-        return ergebnisArray;
+        return ergebnisListe;
     }
     
 }
