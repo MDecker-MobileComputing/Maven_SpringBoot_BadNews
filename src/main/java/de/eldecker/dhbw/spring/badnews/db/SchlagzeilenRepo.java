@@ -2,6 +2,8 @@ package de.eldecker.dhbw.spring.badnews.db;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -33,5 +35,27 @@ public interface SchlagzeilenRepo extends JpaRepository<SchlagzeilenEntity, Long
      */
     List<SchlagzeilenEntity> findByInlandFalseOrderById();
 
+    /*
+        PageRequest pageRequest = PageRequest.of( 2, 100 ); // pages are zero-based
+        Page<SchlagzeilenEntity> page = schlagzeilenRepo.findByInlandTrueOrderById(pageRequest); 
+     */
+    
+    
+    /**
+     * Wie {@link #findByInlandTrueOrderById()}, aber mit Paginierung. 
+     * 
+     * @param pageable
+     * @return
+     */
+    Page<SchlagzeilenEntity> findByInlandTrueOrderById( Pageable pageable );
+
+    /**
+     * Wie {@link #findByInlandFalseOrderById()}, aber mit Paginierung. 
+     * 
+     * @param pageable
+     * @return
+     */    
+    Page<SchlagzeilenEntity> findByInlandFalseOrderById( Pageable pageable );
+    
 }
 
