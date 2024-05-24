@@ -7,6 +7,7 @@ import static java.text.NumberFormat.getNumberInstance;
 
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -47,7 +49,7 @@ public class ThymeleafController {
     /** Formatierer für Seitenzahlen (Tausendertrennpunkte einfügen). */
     private static final NumberFormat ZAHLENFORMATIERER = getNumberInstance( GERMANY );
 
-    
+
     /**
      * Konstruktor für <i>Dependency Injection</i>.
      */
@@ -65,7 +67,7 @@ public class ThymeleafController {
      * Logger geschrieben und auch auf einer Fehlerseite angezeigt.
      *
      * @param exception Exception-Objekt, Message wird ausgelesen;
-     *                  wenn Instanz von 
+     *                  wenn Instanz von
      *                  {@code MethodArgumentTypeMismatchException},
      *                  dann spezielle Fehlermeldung für ungültigen
      *                  {@code int}-Wert.
@@ -84,8 +86,8 @@ public class ThymeleafController {
 
         if ( exception instanceof MethodArgumentTypeMismatchException ex ) {
 
-            fehlertext = format( "Ungültiger Wert für URL-Parameter \"%s\" übergeben.",
-                                 ex.getName() );
+            fehlertext = format( "Ungültiger Wert für URL-Parameter \"%s\" übergeben: \"%s\"",
+                                 ex.getName(), ex.getValue() );
         } else {
 
             fehlertext = exception.getMessage();
@@ -99,7 +101,7 @@ public class ThymeleafController {
 
 
     /**
-     * Eine Seite mit Schlagzeilen anzeigen.
+     * Eine Seite mit (einer Liste von) Schlagzeilen anzeigen.
      *
      * @param model Objekt, in dem die Werte für die Platzhalter in der Template-Datei
      *              definiert werden.
@@ -110,19 +112,19 @@ public class ThymeleafController {
      * @param anzahl Optionaler URL-Parameter für Anzahl Schlagzeilen auf einer Seite;
      *               Default-Wert: 10; zulässiger Bereich 1 bis 500.
      *
-     * @return Name Template-Datei "schlagzeilen-erfolg"
+     * @return Name Template-Datei "schlagzeilen-liste"
      *
      * @throws SchlagzeilenException Ungültige {@code int]}-Werte für URL-Parameter übergeben, siehe
      *                               {@link #exceptionBehandeln(Exception, Model)}
-     *                               
+     *
      * @throws MethodArgumentTypeMismatchException Für URL-Parameter {@code seite} oder {@code anzahl}
      *                                             übergebene Werte konnten nicht nach {@code int} geparst
-     *                                             werden                         
+     *                                             werden
      */
     @GetMapping( "/schlagzeilen" )
-    public String schlagzeilenAnzeigen( Model model,
-                                        @RequestParam( value = "seite" , required = false, defaultValue = "1"  ) int seite ,
-                                        @RequestParam( value = "anzahl", required = false, defaultValue = "10" ) int anzahl )
+    public String liste( Model model,
+                         @RequestParam( value = "seite" , required = false, defaultValue = "1"  ) int seite ,
+                         @RequestParam( value = "anzahl", required = false, defaultValue = "10" ) int anzahl )
             throws SchlagzeilenException {
 
         checkeSeiteUndAnzahl( seite, anzahl ); // throws SchlagzeilenException
@@ -134,53 +136,53 @@ public class ThymeleafController {
         final Page<SchlagzeilenEntity> ergebnisPage = _repo.findAll( seitenRequest );
 
         checkErgebnisPage( ergebnisPage, seite );  // throws SchlagzeilenException
-        
-        final List<SchlagzeilenEntity> schlagzeilenListe = ergebnisPage.getContent();                        
+
+        final List<SchlagzeilenEntity> schlagzeilenListe = ergebnisPage.getContent();
         final int maxSeite = ergebnisPage.getTotalPages();
-        
+
         model.addAttribute( "schlagzeilenliste", schlagzeilenListe );
         model.addAttribute( "seiteNr"          , seite             );
         model.addAttribute( "maxSeite"         , maxSeite          );
 
-        return "schlagzeilen-erfolg";
-    }        
+        return "schlagzeilen-liste";
+    }
 
 
     /**
      * Überprüfung von Query zurückgegebener Seite.
-     * 
+     *
      * @param ergebnisPage von Query zurückgelieferte Seite
-     * 
+     *
      * @param seite von Nutzer als URL-Parameter übergebene Seiten-Nr; es
-     *              wird überprüft, ob größer als letzte Seite 
-     * 
-     * @throws SchlagzeilenException Wenn Wert von {@code seite} zu groß oder 
-     *                               {@code ergebnisPage} eine leere Liste von 
+     *              wird überprüft, ob größer als letzte Seite
+     *
+     * @throws SchlagzeilenException Wenn Wert von {@code seite} zu groß oder
+     *                               {@code ergebnisPage} eine leere Liste von
      *                               Schlagzeilen enthält.
      */
-    private void checkErgebnisPage( Page<SchlagzeilenEntity> ergebnisPage, int seite ) 
+    private void checkErgebnisPage( Page<SchlagzeilenEntity> ergebnisPage, int seite )
             throws SchlagzeilenException  {
-        
-        final int nrLetzteSeite = ergebnisPage.getTotalPages();        
+
+        final int nrLetzteSeite = ergebnisPage.getTotalPages();
         if ( seite > nrLetzteSeite ) {
-                        
+
             final String formattedSeite         = ZAHLENFORMATIERER.format( seite         );
-            final String formattedNrLetzteSeite = ZAHLENFORMATIERER.format( nrLetzteSeite );            
-            
-            final String fehlertext = 
+            final String formattedNrLetzteSeite = ZAHLENFORMATIERER.format( nrLetzteSeite );
+
+            final String fehlertext =
                     format( "Seite Nr. %s angefordert, aber letzte Seite ist %s.",
                             formattedSeite, formattedNrLetzteSeite );
-            
+
             throw new SchlagzeilenException( fehlertext );
         }
-        
+
         if ( ergebnisPage.getContent().isEmpty() ) {
 
             throw new SchlagzeilenException( "Leere Liste mit Schlagzeilen bekommen." );
         }
     }
-    
-    
+
+
     /**
      * Diese Methode überprüft die als URL-Parameter übergebenen Werte für
      * die Seite und die Anzahl der Schlagzeile pro Seite.
@@ -188,8 +190,8 @@ public class ThymeleafController {
      * Bereich liegt, dann wird eine {@code SchlagzeilenException}
      * geworfen.
      * <br><br>
-     * 
-     * Siehe Doku zu Methode {@link #schlagzeilenAnzeigen(Model, int, int)}
+     *
+     * Siehe Doku zu Methode {@link #liste(Model, int, int)}
      * für zulässige Werte für diese beiden URL-Parameter.
      *
      * @param seite Seite (1-basiert), als URL-Parameter-Wert erhalten
@@ -204,7 +206,7 @@ public class ThymeleafController {
 
         if ( seite < 1 ) {
 
-            final String fehlerText = 
+            final String fehlerText =
                     format( "Ungültige Seite %d als URL-Parameter übergeben.", seite );
 
             throw new SchlagzeilenException( fehlerText );
@@ -212,11 +214,40 @@ public class ThymeleafController {
 
         if ( anzahl < 1 || anzahl > 500 ) {
 
-            final String fehlerText = 
+            final String fehlerText =
                     format( "Ungültige Wert %d für Anzahl Schlagzeile pro Seite übergeben.", anzahl );
 
             throw new SchlagzeilenException( fehlerText );
         }
+    }
+
+
+    /**
+     * Einzelne Schlagzeile anzeigen.
+     *
+     * @param id ID (Primärschlüssel) der Schlagzeile, die angezeigt werden soll.
+     *
+     * @param model Objekt, in dem die Werte für die Platzhalter in der Template-Datei
+     *              definiert werden.
+     *
+     * @return Name der Template-Datei "schlagzeile-einzeln"
+     * 
+     * throws SchlagzeilenException Keine Schlagzeile mit {@code id} gefunden
+     */
+    @GetMapping( "/schlagzeile/{id}")
+    public String schlagzeile( @PathVariable("id") Long id,
+                               Model model ) throws SchlagzeilenException {
+
+        final Optional<SchlagzeilenEntity> schlagzeileOptional = _repo.findById( id );
+        if ( schlagzeileOptional.isEmpty() ) {
+         
+            final String text = format( "Keine Schlagzeile mit ID=%d gefunden.", id );
+            throw new SchlagzeilenException( text );
+        }        
+        
+        model.addAttribute( "schlagzeile", schlagzeileOptional.get() );
+
+        return "schlagzeile-einzeln";
     }
 
 }
