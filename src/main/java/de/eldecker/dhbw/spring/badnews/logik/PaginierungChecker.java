@@ -92,7 +92,7 @@ public class PaginierungChecker {
         if ( anzahl < 1 || anzahl > 500 ) {
 
             final String fehlerText =
-                    format( "Ungültige Wert %d für Anzahl Schlagzeile pro Seite übergeben.", anzahl );
+                    format( "Ungültige Wert %d für Anzahl Schlagzeilen pro Seite übergeben.", anzahl );
 
             throw new SchlagzeilenException( fehlerText );
         }

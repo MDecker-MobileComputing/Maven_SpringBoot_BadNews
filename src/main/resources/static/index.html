@@ -14,9 +14,34 @@
     <li><a href="h2-console/login.jsp"              target="_blank" >Web-UI für H2-Datenbank</a></li>
     <li><a href="app/schlagzeilen"                  target="_blank" >Schlagzeilen: Startseite</a></li>
     <li><a href="app/schlagzeilen?seite=2&anzahl=5" target="_blank" >Schlagzeilen: Seite=2, Anzahl=5</a></li>
-    <li><a href="app/schlagzeile/1"                 target="_blank" >Schlagzeile mit ID=1 aufrufen</a></li>
-    <li><a href="app/schlagzeile/9999999"           target="_blank" >Schlagzeile mit ID=9999999 aufrufen (gibt es nicht)</a></li>
   </ul>
   <br><br>
+
+  <h2>Gültige Aufrufe Schlagzeilenliste</h2>
+  <ul>
+    <li><a href="app/schlagzeilen"                      target="_blank" >Schlagzeilen: Startseite</a></li>
+    <li><a href="app/schlagzeilen?seite=2&anzahl=5"     target="_blank" >Schlagzeilen: Seite=2  , Anzahl=5</a></li>
+    <li><a href="app/schlagzeilen?seite=500&anzahl=10"  target="_blank" >Schlagzeilen: Seite=500, Anzahl=10 (letzte Seite)</a></li>
+  </ul>
+  <br><br>
+
+
+  <h2>Ungültige Aufrufe Schlagzeilenliste</h2>
+  <ul>
+    <li><a href="app/schlagzeilen?seite=-3&anzahl=5"    target="_blank" >Schlagzeilen: Seite=-3   , Anzahl=5</a></li>
+    <li><a href="app/schlagzeilen?seite=99999&anzahl=5" target="_blank" >Schlagzeilen: Seite=99999, Anzahl=5</a></li>
+    <li><a href="app/schlagzeilen?seite=xyz&anzahl=5"   target="_blank" >Schlagzeilen: Seite=xyz  , Anzahl=5</a></li>
+    <li><a href="app/schlagzeilen?seite=2&anzahl=9999"  target="_blank" >Schlagzeilen: Seite=2    , Anzahl=9999</a></li>
+    <li><a href="app/schlagzeilen?seite=2&anzahl=-3"    target="_blank" >Schlagzeilen: Seite=2    , Anzahl=-3</a></li>
+    <li><a href="app/schlagzeilen?seite=2&anzahl=xyz"   target="_blank" >Schlagzeilen: Seite=2    , Anzahl=xyz</a></li>
+  </ul>
+  <br><br>
+
+  <h2>Links auf einzelne Schlagzeilen</h2>
+  <ul>
+    <li><a href="app/schlagzeile/1"       target="_blank" >Schlagzeile mit ID=1 aufrufen</a></li>
+    <li><a href="app/schlagzeile/9999999" target="_blank" >Schlagzeile mit ID=9999999 aufrufen (gibt es nicht)</a></li>
+    <li><a href="app/schlagzeile/xyz"     target="_blank" >Schlagzeile mit ID=xyz aufrufen (ungültiges Format)</a></li>
+  </ul>
 
 </body>
