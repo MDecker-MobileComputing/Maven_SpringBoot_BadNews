@@ -53,12 +53,16 @@ public class ThymeleafController {
 
 
     /**
-     * Wenn eine Kontroller-Methode eine Exception wirft, dann wird dieser
+     * Wenn eine Mapping-Methode eine Exception wirft, dann wird dieser
      * von der folgenden Methode behandelt und auf die Fehlerseite
      * weitergeleitet. Die Message aus {@code exception} wird auf den
      * Logger geschrieben und auch auf einer Fehlerseite angezeigt.
      *
-     * @param exception Exception-Objekt, Message wird ausgelesen
+     * @param exception Exception-Objekt, Message wird ausgelesen;
+     *                  wenn Instanz von 
+     *                  {@code MethodArgumentTypeMismatchException},
+     *                  dann spezielle Fehlermeldung für ungültigen
+     *                  {@code int}-Wert.
      *
      * @param model Objekt, in dem die Werte für die Platzhalter in der
      *              Template-Datei definiert werden; es wird die Message
@@ -102,8 +106,12 @@ public class ThymeleafController {
      *
      * @return Name Template-Datei "schlagzeilen-erfolg"
      *
-     * @throws SchlagzeilenException Ungültige Seite aufgerufen, siehe Methode
+     * @throws SchlagzeilenException Ungültige {@code int]}-Werte für URL-Parameter übergeben, siehe
      *                               {@link #exceptionBehandeln(Exception, Model)}
+     *                               
+     * @throws MethodArgumentTypeMismatchException Für URL-Parameter {@code seite} oder {@code anzahl}
+     *                                             übergebene Werte konnten nicht nach {@code int} geparst
+     *                                             werden                         
      */
     @GetMapping( "/schlagzeilen" )
     public String schlagzeilenAnzeigen( Model model,
@@ -116,10 +124,10 @@ public class ThymeleafController {
 
         final PageRequest seitenRequest = PageRequest.of( seite - 1, anzahl, SORT_ID_ASC );
 
-     // *** eigentliche DB-Abfrage ***
-        final Page<SchlagzeilenEntity> ergebnisSeite = _repo.findAll( seitenRequest );
+        // *** eigentliche DB-Abfrage ***
+        final Page<SchlagzeilenEntity> ergebnisPage = _repo.findAll( seitenRequest );
 
-        final List<SchlagzeilenEntity> schlagzeilenListe = ergebnisSeite.getContent();
+        final List<SchlagzeilenEntity> schlagzeilenListe = ergebnisPage.getContent();
         if ( schlagzeilenListe.isEmpty() ) {
 
             throw new SchlagzeilenException( "Leere Liste mit Schlagzeilen bekommen." );
@@ -137,6 +145,10 @@ public class ThymeleafController {
      * Wenn mindestens einer dieser beiden Werte nicht im gültigen
      * Bereich liegt, dann wird eine {@code SchlagzeilenException}
      * geworfen.
+     * <br><br>
+     * 
+     * Siehe Doku zu Methode {@link #schlagzeilenAnzeigen(Model, int, int)}
+     * für zulässige Werte für diese beiden URL-Parameter.
      *
      * @param seite Seite (1-basiert), als URL-Parameter-Wert erhalten
      *
@@ -150,14 +162,16 @@ public class ThymeleafController {
 
         if ( seite < 1 ) {
 
-            final String fehlerText = format( "Ungültige Seite %d als URL-Parameter übergeben.", seite );
+            final String fehlerText = 
+                    format( "Ungültige Seite %d als URL-Parameter übergeben.", seite );
 
             throw new SchlagzeilenException( fehlerText );
         }
 
         if ( anzahl < 1 || anzahl > 500 ) {
 
-            final String fehlerText = format( "Ungültige Wert %d für Anzahl Schlagzeile pro Seite übergeben.", anzahl );
+            final String fehlerText = 
+                    format( "Ungültige Wert %d für Anzahl Schlagzeile pro Seite übergeben.", anzahl );
 
             throw new SchlagzeilenException( fehlerText );
         }

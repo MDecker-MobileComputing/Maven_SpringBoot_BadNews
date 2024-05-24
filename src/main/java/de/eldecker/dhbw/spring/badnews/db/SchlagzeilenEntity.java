@@ -108,7 +108,7 @@ public class SchlagzeilenEntity {
      * 
      * @return {@code true} für Inlands-Schlagzeile, sonst {@code false};
      *         eine Inlands-Schlagzeile enthält einen Ort in Deutschland
-     *         (v.a. ein Bundesland in Deutschland)
+     *         (Bundesland in Deutschland)
      */
     public boolean isInland() {
         
