@@ -11,15 +11,13 @@
     <h1 th:text="'Schlagzeilen (Seite ' + ${seiteNr} + ' von ' + ${maxSeite} + ')'"></h1>
 
     <div th:each="schlagzeile : ${schlagzeilenliste}">
-
+        ( #<span th:text="${schlagzeile.getId()}"></span> )
         <span th:if="${schlagzeile.isInland()}"  th:text="'[Inland]'"       ></span>
         <span th:if="${!schlagzeile.isInland()}" th:text="'[International]'"></span>
         &nbsp;
-        <a href="">
+        <a th:href="'schlagzeile/' + ${schlagzeile.getId()}">
             <span th:text="${schlagzeile.getSchlagzeile()}"></span>
-            (#<span th:text="${schlagzeile.getId()}"></span>)
         </a>
-
         <br><br>
     </div>
 
