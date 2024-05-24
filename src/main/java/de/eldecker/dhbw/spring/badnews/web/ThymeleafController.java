@@ -2,7 +2,10 @@ package de.eldecker.dhbw.spring.badnews.web;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static java.lang.String.format;
+import static java.util.Locale.GERMANY;
+import static java.text.NumberFormat.getNumberInstance;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -41,7 +44,10 @@ public class ThymeleafController {
     /** Sortier-Reihenfolge für Paginierung: Aufsteigend nach Feld "id". */
     private static final Sort SORT_ID_ASC = Sort.by( ASC, "id" );
 
+    /** Formatierer für Seitenzahlen (Tausendertrennpunkte einfügen). */
+    private static final NumberFormat ZAHLENFORMATIERER = getNumberInstance( GERMANY );
 
+    
     /**
      * Konstruktor für <i>Dependency Injection</i>.
      */
@@ -127,18 +133,61 @@ public class ThymeleafController {
         // *** eigentliche DB-Abfrage ***
         final Page<SchlagzeilenEntity> ergebnisPage = _repo.findAll( seitenRequest );
 
+        checkErgebnisPage( ergebnisPage, seite );  // throws SchlagzeilenException
+        
         final List<SchlagzeilenEntity> schlagzeilenListe = ergebnisPage.getContent();
-        if ( schlagzeilenListe.isEmpty() ) {
-
-            throw new SchlagzeilenException( "Leere Liste mit Schlagzeilen bekommen." );
+        
+        
+        
+        final int maxSeite = ergebnisPage.getTotalPages();
+        if ( seite > maxSeite ) {
+            
+            throw new SchlagzeilenException( "Seite zu groß" );
         }
+        
+
 
         model.addAttribute( "schlagzeilenliste", schlagzeilenListe );
 
         return "schlagzeilen-erfolg";
+    }        
+
+
+    /**
+     * Überprüfung von Query zurückgegebener Seite.
+     * 
+     * @param ergebnisPage von Query zurückgelieferte Seite
+     * 
+     * @param seite von Nutzer als URL-Parameter übergebene Seiten-Nr; es
+     *              wird überprüft, ob größer als letzte Seite 
+     * 
+     * @throws SchlagzeilenException Wenn Wert von {@code seite} zu groß oder 
+     *                               {@code ergebnisPage} eine leere Liste von 
+     *                               Schlagzeilen enthält.
+     */
+    private void checkErgebnisPage( Page<SchlagzeilenEntity> ergebnisPage, int seite ) 
+            throws SchlagzeilenException  {
+        
+        final int nrLetzteSeite = ergebnisPage.getTotalPages();        
+        if ( seite > nrLetzteSeite ) {
+                        
+            final String formattedSeite         = ZAHLENFORMATIERER.format( seite         );
+            final String formattedNrLetzteSeite = ZAHLENFORMATIERER.format( nrLetzteSeite );            
+            
+            final String fehlertext = 
+                    format( "Seite Nr. %s angefordert, aber letzte Seite ist %s.",
+                            formattedSeite, formattedNrLetzteSeite );
+            
+            throw new SchlagzeilenException( fehlertext );
+        }
+        
+        if ( ergebnisPage.getContent().isEmpty() ) {
+
+            throw new SchlagzeilenException( "Leere Liste mit Schlagzeilen bekommen." );
+        }
     }
-
-
+    
+    
     /**
      * Diese Methode überprüft die als URL-Parameter übergebenen Werte für
      * die Seite und die Anzahl der Schlagzeile pro Seite.
