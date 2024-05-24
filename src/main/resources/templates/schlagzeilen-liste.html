@@ -12,10 +12,14 @@
 
     <div th:each="schlagzeile : ${schlagzeilenliste}">
 
-        <span th:if="${schlagzeile.isInland()}"  th:text="'[Inland]'"></span>
+        <span th:if="${schlagzeile.isInland()}"  th:text="'[Inland]'"       ></span>
         <span th:if="${!schlagzeile.isInland()}" th:text="'[International]'"></span>
+        &nbsp;
+        <a href="">
+            <span th:text="${schlagzeile.getSchlagzeile()}"></span>
+            (#<span th:text="${schlagzeile.getId()}"></span>)
+        </a>
 
-        <span th:text="${schlagzeile.getSchlagzeile()}"></span>
         <br><br>
     </div>
 
