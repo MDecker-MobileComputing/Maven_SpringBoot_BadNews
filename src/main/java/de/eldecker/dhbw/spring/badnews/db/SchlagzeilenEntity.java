@@ -1,6 +1,6 @@
 package de.eldecker.dhbw.spring.badnews.db;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.SEQUENCE;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class SchlagzeilenEntity {
      * gibt es auch keine Setter-Methode für dieses Attribut.
      */
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = SEQUENCE)
     private Long id;
     
     /** Text der zufällig erzeugten Negativschlagzeile. */
