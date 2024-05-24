@@ -3,7 +3,6 @@ package de.eldecker.dhbw.spring.badnews.logik;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -37,15 +36,12 @@ public class SchlagzeilenErzeuger {
             "Wirtschaftskrise", "Vulkanausbruch"
         };
     
-    /** Array mit Orten in Deutschland (zuerst die Bundesländer, dann noch einige Regionen). */
+    /** Array mit Bundesländern in Deutschland. */
     public static final String[] ORTE_DEUTSCHLAD_ARRAY = {
             "Baden-Württemberg", "Bayern", "Bremen", "Berlin", "Brandenburg",
             "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen",
             "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen",
-            "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen",
-            
-            // ab jetzt Regionen
-            "Breisgau", "Franken", "Nordseeküste", "Ostseeküste", "Ostfriesland", "Schwarzwald" 
+            "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen" 
         };    
 
     /** Array mit Ländern (internationale Staaten). */
@@ -80,8 +76,7 @@ public class SchlagzeilenErzeuger {
      */
     private String getZufallsElement(String[] stringArray) {
                 
-        final int laenge = stringArray.length;
-        
+        final int laenge = stringArray.length;        
         if ( laenge == 0) {
             
             LOG.warn( "Soll zufälligen String aus Array mit 0 Elementen zurückgeben." );
@@ -105,9 +100,10 @@ public class SchlagzeilenErzeuger {
         
         final String ereignis = getZufallsElement( EREIGNISSE_ARRAY );
         
-        String ort = "";
+        String  ort    = "";
         boolean inland = false;
-        if ( _random.nextFloat() < .3 ) {
+        
+        if ( _random.nextFloat() < .3 ) { // 30% Wahrscheinlichkeit für Inlandsnachricht
             
             ort = getZufallsElement( ORTE_DEUTSCHLAD_ARRAY );
             inland = true;
@@ -120,7 +116,7 @@ public class SchlagzeilenErzeuger {
         final String schlagzeile = String.format( "%s in %s", ereignis, ort ); 
         
         final SchlagzeilenEntity ergebnisEntity = 
-                new SchlagzeilenEntity( schlagzeile, inland );
+                                new SchlagzeilenEntity( schlagzeile, inland );
         
         return ergebnisEntity;
     }
