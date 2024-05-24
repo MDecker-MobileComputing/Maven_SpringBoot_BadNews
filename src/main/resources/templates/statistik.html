@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Schlagzeilen: Statistik</title>
+<title>Schlagzeilen-Statistik: Anzahl nach Kategorie</title>
 <meta charset="utf-8" >
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="../../styles.css">
 </head>
 <body>
 
-    <h1>Schlagzeilen: Statistik</h1>
+    <h1>Schlagzeilen-Statistik: Anzahl nach Kategorie</h1>
 
     <ul>
         <li th:each="statistik : ${statistikzeilen}">
-            <span th:if="${statistik.inland()}"  th:text="'Inland'"       ></span>
-            <span th:if="${!statistik.inland()}" th:text="'International'"></span>
+            <span class="fett" th:if="${statistik.inland()}"  th:text="'Inland'"       ></span>
+            <span class="fett" th:if="${!statistik.inland()}" th:text="'International'"></span>
             : &nbsp;
-            <span th:text="${statistik.anzahl()}"></span>
+            <span th:text="${#numbers.formatDecimal(statistik.anzahl(), 0, 'POINT', 0, 'POINT')}">
+            </span>
         </li>
     </ul>
 </body>
