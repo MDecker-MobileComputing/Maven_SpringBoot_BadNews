@@ -34,11 +34,6 @@ public interface SchlagzeilenRepo extends JpaRepository<SchlagzeilenEntity, Long
      * @return Schlagzeilen mit Ort im Ausland, sortiert nach ID
      */
     List<SchlagzeilenEntity> findByInlandFalseOrderById();
-
-    /*
-        PageRequest pageRequest = PageRequest.of( 2, 100 ); // pages are zero-based
-        Page<SchlagzeilenEntity> page = schlagzeilenRepo.findByInlandTrueOrderById(pageRequest); 
-     */
     
     
     /**

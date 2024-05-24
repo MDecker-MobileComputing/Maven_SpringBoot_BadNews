@@ -50,10 +50,10 @@ public class SchlagzeilenErzeuger {
 
     /** Array mit Ländern (internationale Staaten). */
     public static final String[] ORTE_NATIONEN_ARRAY = {
-            "Albanien", "Amerika", "Andorra", "Argentinien", "Armenien",
+            "Albanien", "Amerika", "Andorra", "Argentinien", "Armenien", "Australien",
             "Belgien", "Bosnien und Herzegowina", "Bulgarien", "China",
             "Dänemark", "Estland", "Finnland", "Frankreich", "Griechenland",
-            "Irland", "Island", "Italien", "Japan", "Kanada", "Kosovo",
+            "Irland", "Island", "Italien", "Japan", "Kanada", "Kosovo", "Kolumbien",
             "Kroatien", "Lettland", "Liechtenstein", "Litauen", "Luxemburg",
             "Malta", "Mazedonien", "Moldawien", "Monaco", "Montenegro",
             "Niederlande", "Norwegen", "Österreich", "Panama", "Polen",
