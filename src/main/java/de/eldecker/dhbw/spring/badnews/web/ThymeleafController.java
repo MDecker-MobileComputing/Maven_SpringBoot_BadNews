@@ -203,7 +203,14 @@ public class ThymeleafController {
                     listSize );
         }
 
+        int summe = 0;
+        for ( AnzahlByKategorie abk : anzByKategorieList ) {
+            
+            summe += abk.anzahl();
+        }
+        
         model.addAttribute( "statistikzeilen", anzByKategorieList );
+        model.addAttribute( "summe"          , summe              );
         
         return "statistik";
     }                              

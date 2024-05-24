@@ -10,6 +10,11 @@
 
     <h1>Schlagzeilen-Statistik: Anzahl nach Kategorie</h1>
 
+    <p>
+        Die
+        <span th:text="${#numbers.formatDecimal(summe, 0, 'POINT', 0, 'POINT')}"></span>
+        Schlagzeilen in der Datenbank teilen sich wie folgt auf die beiden Kategorien auf:
+    </p>
     <ul>
         <li th:each="statistik : ${statistikzeilen}">
             <span class="fett" th:if="${statistik.inland()}"  th:text="'Inland'"       ></span>
@@ -17,6 +22,9 @@
             : &nbsp;
             <span th:text="${#numbers.formatDecimal(statistik.anzahl(), 0, 'POINT', 0, 'POINT')}">
             </span>
+            (
+            <span th:text="${#numbers.formatDecimal(100.0 * statistik.anzahl() / summe, 1, 'POINT', 2, 'POINT')}">
+            </span> %)
         </li>
     </ul>
 </body>
