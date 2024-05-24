@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 import de.eldecker.dhbw.spring.badnews.helferlein.SchlagzeilenException;
+import de.eldecker.dhbw.spring.badnews.web.ThymeleafController;
 
 
 /**
@@ -63,12 +64,11 @@ public class PaginierungChecker {
     /**
      * Diese Methode überprüft die als URL-Parameter übergebenen Werte für
      * die Seite und die Anzahl der Schlagzeile pro Seite.
-     * Wenn mindestens einer dieser beiden Werte nicht im gültigen
-     * Bereich liegt, dann wird eine {@code SchlagzeilenException}
-     * geworfen.
+     * Wenn mindestens einer dieser beiden Werte nicht im gültigen Bereich
+     * liegt, dann wird eine {@code SchlagzeilenException} geworfen. 
      * <br><br>
      *
-     * Siehe Doku zu Methode {@link #liste(Model, int, int)}
+     * Siehe Doku zu Methode {@link ThymeleafController#liste(Model, int, int)}  
      * für zulässige Werte für diese beiden URL-Parameter.
      *
      * @param seite Seite (1-basiert), als URL-Parameter-Wert erhalten

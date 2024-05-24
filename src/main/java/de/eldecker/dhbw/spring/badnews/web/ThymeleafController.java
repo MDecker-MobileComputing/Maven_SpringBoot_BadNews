@@ -2,10 +2,7 @@ package de.eldecker.dhbw.spring.badnews.web;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static java.lang.String.format;
-import static java.util.Locale.GERMANY;
-import static java.text.NumberFormat.getNumberInstance;
 
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Optional;
 

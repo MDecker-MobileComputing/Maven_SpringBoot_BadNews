@@ -21,6 +21,10 @@ public class SchlagzeilenEntity {
     /**
      * Primärschlüssel, muss von uns nicht selbst befüllt werden, deshalb
      * gibt es auch keine Setter-Methode für dieses Attribut.
+     * <br><br>
+     * 
+     * Bei Wahl der Strategie {@code AUTO} wird auch {@code SEQUENCE}
+     * gewählt.
      */
     @Id
     @GeneratedValue(strategy = SEQUENCE)
