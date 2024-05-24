@@ -1,6 +1,9 @@
 package de.eldecker.dhbw.spring.badnews.db;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 
 /**
@@ -15,6 +18,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * {@code JpaRepository} verwenden.
  */
 public interface SchlagzeilenRepo extends JpaRepository<SchlagzeilenEntity, Long> {
+
+    /**
+     * Query-Methode mit JPQL-Query zum Zählen der Anzahl der 
+     * Inlands- und Auslands-Nachrichten.
+     * 
+     * @return Liste mit zwei Element (je einen mit {@code inland=true} 
+     *         und für {@inland=false}
+     */
+    @Query("SELECT new de.eldecker.dhbw.spring.badnews.db.AnzahlByKategorie( s.inland, COUNT(s) ) " +
+            "FROM SchlagzeilenEntity s " +
+            "GROUP BY s.inland")
+    List<AnzahlByKategorie> zaehleSchlagzeilenInlandAusland();
     
 }
 

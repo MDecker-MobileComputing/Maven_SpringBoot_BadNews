@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import de.eldecker.dhbw.spring.badnews.db.AnzahlByKategorie;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenRepo;
 import de.eldecker.dhbw.spring.badnews.helferlein.SchlagzeilenException;
@@ -76,7 +77,7 @@ public class ThymeleafController {
      *              von {@code exception} in den Platzhalter "fehlermeldung"
      *              kopiert.
      *
-     * @return Template-Datei "schlagzeilen-fehler"
+     * @return Name der Template-Datei "schlagzeilen-fehler.html" ohne Datei-Endung. 
      */
     @ExceptionHandler(Exception.class)
     public String exceptionBehandeln( Exception exception, Model model ) {
@@ -111,8 +112,8 @@ public class ThymeleafController {
      * @param anzahl Optionaler URL-Parameter für Anzahl Schlagzeilen auf einer Seite;
      *               Default-Wert: 10; zulässiger Bereich 1 bis 500.
      *
-     * @return Name Template-Datei "schlagzeilen-liste"
-     *
+     * @return Name der Template-Datei "schlagzeilen-liste.html" ohne Datei-Endung.
+     * 
      * @throws SchlagzeilenException Ungültige {@code int]}-Werte für URL-Parameter übergeben, siehe
      *                               {@link #exceptionBehandeln(Exception, Model)}
      *
@@ -156,11 +157,11 @@ public class ThymeleafController {
      * @param model Objekt, in dem die Werte für die Platzhalter in der Template-Datei
      *              definiert werden.
      *
-     * @return Name der Template-Datei "schlagzeile-einzeln"
+     * @return Name der Template-Datei "schlagzeile-einzeln.html" ohne Datei-Endung.
      * 
-     * throws SchlagzeilenException Keine Schlagzeile mit {@code id} gefunden
+     * @throws SchlagzeilenException Keine Schlagzeile mit {@code id} gefunden
      */
-    @GetMapping( "/schlagzeile/{id}")
+    @GetMapping( "/schlagzeile/{id}" )
     public String schlagzeile( @PathVariable("id") Long id,
                                Model model ) throws SchlagzeilenException {
 
@@ -175,5 +176,36 @@ public class ThymeleafController {
 
         return "schlagzeile-einzeln";
     }
+    
+    
+    /**
+     * Seite mit Statistik (Anzahl Inlands/Auslands-Schlagzeilen) anzeigen.
+     * 
+     * @param model Objekt, in dem die Werte für die Platzhalter in der Template-Datei
+     *              definiert werden.
+     *
+     * @return Name der Template-Datei "statistik.html" ohne Datei-Endung.
+     * 
+     * @throws SchlagzeilenException Query hat mehr als zwei Ergebnisdatensätze
+     *                               zurückgeliefert 
+     */
+    @GetMapping( "/statistik" )
+    public String statistik( Model model ) throws SchlagzeilenException {
+     
+        final List<AnzahlByKategorie> anzByKategorieList = 
+                                        _repo.zaehleSchlagzeilenInlandAusland();
+        
+        final int listSize = anzByKategorieList.size(); 
+        if ( listSize > 2 ) {
+            
+            throw new SchlagzeilenException( 
+                    "Mehr als zwei Einträge in Ergebnisliste für Statistik: " + 
+                    listSize );
+        }
+
+        model.addAttribute( "statistikzeilen", anzByKategorieList );
+        
+        return "statistik";
+    }                              
 
 }
