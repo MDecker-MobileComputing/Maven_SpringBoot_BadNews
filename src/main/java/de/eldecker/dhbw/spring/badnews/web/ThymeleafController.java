@@ -142,11 +142,10 @@ public class ThymeleafController {
         model.addAttribute( "schlagzeilenliste", schlagzeilenListe );
         model.addAttribute( "seiteNr"          , seite             );
         model.addAttribute( "maxSeite"         , maxSeite          );
+        model.addAttribute( "anzahl"           , anzahl            );
 
         return "schlagzeilen-liste";
     }
-
-
 
 
     /**

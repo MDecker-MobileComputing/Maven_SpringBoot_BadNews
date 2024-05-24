@@ -20,5 +20,9 @@
         </a>
         <br><br>
     </div>
+    <br>
+
+    <a th:if="${seiteNr > 1}"
+       th:href="'?seite=' + (${seiteNr} - 1) + '&anzahl=' + ${anzahl}">Vorherige Seite</a>
 
 </body>
