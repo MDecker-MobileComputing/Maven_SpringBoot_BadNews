@@ -135,19 +135,12 @@ public class ThymeleafController {
 
         checkErgebnisPage( ergebnisPage, seite );  // throws SchlagzeilenException
         
-        final List<SchlagzeilenEntity> schlagzeilenListe = ergebnisPage.getContent();
-        
-        
-        
+        final List<SchlagzeilenEntity> schlagzeilenListe = ergebnisPage.getContent();                        
         final int maxSeite = ergebnisPage.getTotalPages();
-        if ( seite > maxSeite ) {
-            
-            throw new SchlagzeilenException( "Seite zu groß" );
-        }
         
-
-
         model.addAttribute( "schlagzeilenliste", schlagzeilenListe );
+        model.addAttribute( "seiteNr"          , seite             );
+        model.addAttribute( "maxSeite"         , maxSeite          );
 
         return "schlagzeilen-erfolg";
     }        

@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <h1>Schlagzeilen</h1>
+    <h1 th:text="'Schlagzeilen (Seite ' + ${seiteNr} + ' von ' + ${maxSeite} + ')'"></h1>
 
     <div th:each="schlagzeile : ${schlagzeilenliste}">
 
