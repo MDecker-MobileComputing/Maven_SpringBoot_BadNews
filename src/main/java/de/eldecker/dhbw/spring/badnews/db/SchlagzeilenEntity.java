@@ -179,7 +179,7 @@ public class SchlagzeilenEntity {
         if ( obj instanceof SchlagzeilenEntity other ) {
 
             return schlagzeile.equals( other.schlagzeile ) &&
-                    inland == other.inland;
+                   inland == other.inland;
             
         } else {
             
