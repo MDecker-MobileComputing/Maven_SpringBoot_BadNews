@@ -43,7 +43,7 @@ public class SchlagzeilenEntity {
 
     
     /**
-     * Konstruktor für Inlands-Schlagzeile
+     * Konstruktor für Inlands-Schlagzeile.
      * 
      * @param schlagzeile Text der Schlagzeile
      */
@@ -104,7 +104,7 @@ public class SchlagzeilenEntity {
         
     /**
      * Getter für Abfrage, ob es sich um eine Inlands-Schlagzeile
-     * handelt  
+     * handelt.
      * 
      * @return {@code true} für Inlands-Schlagzeile, sonst {@code false};
      *         eine Inlands-Schlagzeile enthält einen Ort in Deutschland
