@@ -1,8 +1,7 @@
 package de.eldecker.dhbw.spring.badnews.web;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
-import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
 
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,10 +84,12 @@ public class SucheRestController {
      * 
      * @param q Suchbegriff ("q" steht für "query"); Leerzeichen am
      *          Anfang/Ende werden entfernt, die Groß-/Kleinschreibung
-     *          bei der Suche 
+     *          bei der Suche; Pflichtparameter!
      * 
      * @return Immer Status-Code 200 wenn Suche ausgeführt werden konnte
-     *         (auch mit leerer Ergebnismenge)
+     *         (auch mit leerer Ergebnismenge); bei Fehler Status-Code
+     *         400. Bei erfolgreicher Suche ist in HTTP-Status-Feld
+     *         {@code X-Anzahl-Treffer} die Anzahl der Treffer enthalten.
      * 
      * @throws SchlagzeilenException Wenn Suchbegriff {@code q} weniger 
      *                               als drei Zeichen enthält. 
@@ -104,7 +106,7 @@ public class SucheRestController {
         }
         
         final List<SchlagzeilenEntity> dbErgebnisList = 
-                _repo.sucheSchlagzeilen( q.trim(), PAGE_REQUEST_MAX_50_TREFFER );
+                _repo.sucheSchlagzeilen( qTrimmed, PAGE_REQUEST_MAX_50_TREFFER );
         
         final List<Schlagzeile> ergebnisList = 
                 dbErgebnisList.stream().map( entity -> {
@@ -114,9 +116,16 @@ public class SucheRestController {
             
                     return new Schlagzeile( idInt, text );
             
-        }).collect( toList() );
+        }).toList();
         
-        return ResponseEntity.ok( ergebnisList );
+        final int anzahlTreffer = ergebnisList.size();
+        LOG.info( "Anzahl Treffer für Suchbegriff \"{}\" gefunden: {}", 
+                  q, anzahlTreffer );
+        
+        final HttpHeaders antwortHeaders = new org.springframework.http.HttpHeaders();
+        antwortHeaders.set( "X-Anzahl-Treffer", anzahlTreffer + "" );        
+        
+        return new ResponseEntity<>( ergebnisList, antwortHeaders, OK );
     }
     
 }
