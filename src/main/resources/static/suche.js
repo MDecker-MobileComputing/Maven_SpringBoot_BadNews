@@ -38,7 +38,9 @@ function onSucheButton() {
         return false;
     }
 
-    const url = "/api/v1/suche?query=" + encodeURIComponent( suchbegriff );
+    const url = "/api/v1/suche?query=" + 
+                encodeURIComponent( suchbegriff ) + 
+                "&anzahl=100&seite=1";
 
     fetch( url, {
         method: "GET",
@@ -88,7 +90,9 @@ function suchergebnisDarstellen( antwortString ) {
 
     const ergebnisArray = JSON.parse( antwortString );
 
-    console.log( `Anzahl Schlagzeilen erhalten: ${ergebnisArray.length}` );
+    const anzahl = ergebnisArray.length;
+
+    console.log( `Anzahl Schlagzeilen erhalten: ${anzahl}` );
 
     if ( ergebnisArray.length === 0 ) {
 
@@ -96,16 +100,23 @@ function suchergebnisDarstellen( antwortString ) {
         return;
     }
 
-    ergebnisArray.forEach(item => {
+    const pAnzahl = document.createElement( "p" );
+    pAnzahl.textContent = `Anzahl Schlagzeilen: ${anzahl}`;
+    ergebnisDiv.appendChild( pAnzahl );
+
+    const br = document.createElement( "br" );
+    ergebnisDiv.appendChild( br );
+
+    ergebnisArray.forEach( item => {
 
         const p = document.createElement( "p" );
         const a = document.createElement( "a" );
 
         a.textContent = item.schlagzeile;
-        a.href = "/app/schlagzeile/" + item.id;
+        a.href        = "/app/schlagzeile/" + item.id;
 
-        p.appendChild(a);
-        ergebnisDiv.appendChild(p);
+        p.appendChild( a );
+        ergebnisDiv.appendChild( p );
     });
 }
 
