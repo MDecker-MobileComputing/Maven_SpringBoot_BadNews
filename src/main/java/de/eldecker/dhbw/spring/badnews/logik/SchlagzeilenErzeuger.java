@@ -28,7 +28,7 @@ public class SchlagzeilenErzeuger {
             "Bankrott", "Bildungsnotstand", "Busunfall", "Brandstiftung", "Chemie-Unfall",
             "Cyberangriff", "Doping-Skandal", "Drogenkriminalität", "Dürre", "Entführung",
             "Erdbeben", "Erdrutsch", "Erpressung", "Explosion", "Finanzkrise", "Gasexplosion",
-            "Gewaltserie", "Geflügerpest", "Großbrand", "Großschadenslage", "Hausbesetzung",
+            "Gewaltserie", "Geflügelpest", "Großbrand", "Großschadenslage", "Hausbesetzung",
             "Handwerkermangel", "Hitzewelle", "Korruption", "Lawine", "Lebensmittelskandal",
             "Lehrermangel", "Massenkarambolage", "Massenpanik", "Mord", "Ölkatastrophe",
             "Regierungskrise", "Rinderwahn", "Rohstoffknappheit", "Schiffskollision", "Skandal",
@@ -37,7 +37,7 @@ public class SchlagzeilenErzeuger {
             "Wirtschaftskrise", "Vulkanausbruch"
         };
 
-    /** Array mit Bundesländern in Deutschland. */
+    /** Array mit den deutschen Bundesländern/Stadtstaaten. */
     public static final String[] ORTE_DEUTSCHLAD_ARRAY = {
             "Baden-Württemberg", "Bayern", "Bremen", "Berlin", "Brandenburg",
             "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen",
@@ -50,14 +50,14 @@ public class SchlagzeilenErzeuger {
             "Albanien", "Amerika", "Andorra", "Argentinien", "Armenien", "Australien",
             "Brasilien", "Belgien", "Bosnien und Herzegowina", "Bulgarien", "China",
             "Dänemark", "Estland", "Finnland", "Frankreich", "Griechenland", "Großbritannien",
-            "Iran", "Irak", "Irland", "Island", "Italien", "Japan", "Kanada", "Kosovo",
+            "Holland", "Iran", "Irak", "Irland", "Island", "Italien", "Japan", "Kanada", "Kosovo",
             "Kolumbien", "Kroatien", "Lettland", "Liechtenstein", "Litauen", "Luxemburg",
             "Malta", "Mazedonien", "Moldawien", "Monaco", "Montenegro",
-            "Niederlanden", "Norwegen", "Österreich", "Panama", "Peru", "Polen", "Pakistan",
+            "Norwegen", "Österreich", "Panama", "Peru", "Polen", "Pakistan",
             "Portugal", "Rumänien", "Russland", "San Marino", "Schweden",
             "der Schweiz", "Senegal", "Serbien", "Singapur", "Slowakei", "Slowenien",
-            "Spanien", "Taiwan", "Tschechien", "der Türkei", "der Ukraine",
-            "Ungarn", "Vatikanstadt", "Weißrussland"
+            "Spanien", "Süd-Afrika", "Taiwan", "Tunesien"; "Tschechien", "der Türkei",
+            "der Ukraine", "Ungarn", "Vatikanstadt", "Weißrussland"
         };
 
 
