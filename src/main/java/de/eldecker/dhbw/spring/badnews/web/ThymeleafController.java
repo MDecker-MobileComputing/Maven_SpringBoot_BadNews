@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import de.eldecker.dhbw.spring.badnews.db.AnzahlByKategorie;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenRepo;
 import de.eldecker.dhbw.spring.badnews.helferlein.SchlagzeilenException;
 import de.eldecker.dhbw.spring.badnews.logik.PaginierungChecker;
+import de.eldecker.dhbw.spring.badnews.model.AnzahlByKategorie;
 
 
 /**

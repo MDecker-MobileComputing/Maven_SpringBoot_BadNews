@@ -1,0 +1,129 @@
+{
+  "version": 6,
+  "entities": [
+    {
+      "entity": {
+        "type": "Project",
+        "id": "573db260-015a-425c-8a3d-bbf569f4e256",
+        "name": "BadNews"
+      },
+      "children": [
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "encoded": true,
+                    "name": "q",
+                    "value": "%20%20"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/v1/suche"
+            },
+            "id": "e138a5af-c399-435a-a9c7-92460130918f",
+            "name": "Suche nach \"<leerer String>\"",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "q",
+                    "value": "BAYERN"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/v1/suche"
+            },
+            "id": "7d0011c0-f13e-43c4-819a-262ef880655b",
+            "name": "Suche nach \"Bayern\"",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "q",
+                    "value": "Krise"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/v1/suche"
+            },
+            "id": "0367a1e7-a341-4779-91f7-1a6dc78e7916",
+            "name": "Suche nach \"Krise\"",
+            "headers": []
+          }
+        }
+      ]
+    }
+  ]
+}
