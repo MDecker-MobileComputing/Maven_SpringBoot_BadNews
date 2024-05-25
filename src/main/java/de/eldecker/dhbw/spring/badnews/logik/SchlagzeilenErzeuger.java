@@ -56,7 +56,7 @@ public class SchlagzeilenErzeuger {
             "Norwegen", "Österreich", "Panama", "Peru", "Polen", "Pakistan",
             "Portugal", "Rumänien", "Russland", "San Marino", "Schweden",
             "der Schweiz", "Senegal", "Serbien", "Singapur", "Slowakei", "Slowenien",
-            "Spanien", "Süd-Afrika", "Taiwan", "Tunesien"; "Tschechien", "der Türkei",
+            "Spanien", "Süd-Afrika", "Taiwan", "Tunesien", "Tschechien", "der Türkei",
             "der Ukraine", "Ungarn", "Vatikanstadt", "Weißrussland"
         };
 
