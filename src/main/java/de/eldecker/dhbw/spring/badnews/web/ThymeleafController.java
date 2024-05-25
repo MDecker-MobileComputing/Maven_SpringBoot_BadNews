@@ -1,6 +1,6 @@
 package de.eldecker.dhbw.spring.badnews.web;
 
-import static org.springframework.data.domain.Sort.Direction.ASC;
+import static de.eldecker.dhbw.spring.badnews.helferlein.SortierReihenfolgeKonstanten.SORT_ID_ASC;
 import static java.lang.String.format;
 
 import java.util.List;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,8 +44,7 @@ public class ThymeleafController {
     /** Service-Bean für div. Checks im Zusammenhang mit der Paginierung. */
     private PaginierungChecker _checker;
 
-    /** Sortier-Reihenfolge für Paginierung: Aufsteigend nach Feld "id". */
-    private static final Sort SORT_ID_ASC = Sort.by( ASC, "id" );
+
 
 
     /**

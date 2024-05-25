@@ -1,6 +1,6 @@
 package de.eldecker.dhbw.spring.badnews.web;
 
-import static org.springframework.data.domain.Sort.Direction.ASC;
+import static de.eldecker.dhbw.spring.badnews.helferlein.SortierReihenfolgeKonstanten.SORT_ID_ASC;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,9 +33,6 @@ import de.eldecker.dhbw.spring.badnews.model.Schlagzeile;
 public class SucheRestController {
     
     private final static Logger LOG = LoggerFactory.getLogger( SucheRestController.class );
-
-    /** Sortier-Reihenfolge für Paginierung: Aufsteigend nach Feld "id". */
-    private static final Sort SORT_ID_ASC = Sort.by( ASC, "id" );    
     
     
     /** Repo-Bean für Zugriff auf Tabelle mit Schlagzeilen. */
@@ -93,7 +89,7 @@ public class SucheRestController {
      * @param anzahl Anzahl Treffer pro Seite; es wird eine Exception geworfen,
      *               wenn Wert kleiner als 1 ist.
      * 
-     * @return Immer Status-Code 200 wenn Suche ausgeführt werden konnte
+     * @return Status-Code 200 wenn die Suche ausgeführt werden konnte
      *         (auch mit leerer Ergebnismenge); bei Fehler Status-Code
      *         400. Bei erfolgreicher Suche sind auch die von Methode
      *         {@link #erzeugeAntwortHeader(Page)} erzeugten HTTP-Header
@@ -140,14 +136,14 @@ public class SucheRestController {
     
     
     /**
-     * Methode erzeugt HTTP-Header für Antwort REST-Methode {@link #suche(String)}.
+     * Methode erzeugt HTTP-Header für Antwort REST-Methode {@link #suche(String, int, int).
      * <br><br>
      * 
      * Beispiel für erzeugte Header:
      * <pre>
-     * X-Anzahl-Treffer-Gesamt: 101
-     * X-Anzahl-Treffer-Seite: 50
-     * X-Anzahl-Seiten: 3
+     *   X-Anzahl-Treffer-Gesamt: 101
+     *   X-Anzahl-Treffer-Seite: 50
+     *   X-Anzahl-Seiten: 3
      * </pre>
      * 
      * @param page Objekt mit einer Ergebnis-Seite (ggf. Teilmenge der Treffer) und 
