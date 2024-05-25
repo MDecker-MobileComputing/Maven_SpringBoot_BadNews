@@ -4,6 +4,7 @@ import de.eldecker.dhbw.spring.badnews.model.AnzahlByKategorie;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -45,12 +46,12 @@ public interface SchlagzeilenRepo extends JpaRepository<SchlagzeilenEntity, Long
      * @param pageable Objekt zur Steuerung der Paginierung (Anzahl Datensätze
      *                 pro Seite und Nummer der Seite)
      * 
-     * @return Liste von gefundenen Schlagzeilen
+     * @return "Seite" von gefundenen Schlagzeilen (also Liste mit Teilmenge der Treffer
      */
     @Query("SELECT s FROM SchlagzeilenEntity s " + 
            "WHERE lower(s.schlagzeile) LIKE lower(concat('%', :suchstring, '%'))" +
            "ORDER BY s.schlagzeile" )    
-    List<SchlagzeilenEntity> sucheSchlagzeilen( @Param("suchstring") String suchstring,  
+    Page<SchlagzeilenEntity> sucheSchlagzeilen( @Param("suchstring") String suchstring,  
                                                 Pageable pageable );
 
 }

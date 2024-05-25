@@ -29,9 +29,8 @@
                 "items": [
                   {
                     "enabled": true,
-                    "encoded": true,
                     "name": "q",
-                    "value": "%20%20"
+                    "value": "gibt-es-nicht"
                   }
                 ]
               },
@@ -69,7 +68,7 @@
                   {
                     "enabled": true,
                     "name": "q",
-                    "value": "BAYERN"
+                    "value": "BAY"
                   }
                 ]
               },
@@ -120,6 +119,82 @@
             },
             "id": "0367a1e7-a341-4779-91f7-1a6dc78e7916",
             "name": "Suche nach \"Krise\"",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "q",
+                    "value": "ba"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/v1/suche"
+            },
+            "id": "a5a94fc3-b3f4-4e1a-9ad5-d1072a013fba",
+            "name": "Suche nach \"ba\" (zu kurz)",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "q",
+                    "value": "Krise"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/v1/suche"
+            },
+            "id": "cb6b5d5e-8cb5-4484-b1ef-5bdf74953325",
+            "name": "Suche nach \"gibt-es-nicht\"",
             "headers": []
           }
         }

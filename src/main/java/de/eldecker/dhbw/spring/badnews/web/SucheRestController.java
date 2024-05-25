@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,7 @@ public class SucheRestController {
      */
     private static final PageRequest PAGE_REQUEST_MAX_50_TREFFER = PageRequest.of( 0, 50 ); 
 
+    
     /** Repo-Bean für Zugriff auf Tabelle mit Schlagzeilen. */
     private SchlagzeilenRepo _repo;
     
@@ -54,15 +56,15 @@ public class SucheRestController {
 
     
     /**
-     * Diese Methode behandelt Exceptions, die von einem der REST-Endpunkte
+     * Diese Methode behandelt Exceptions, die vom REST-Endpunkt
      * in dieser Klasse geworfen wurde. Es wird eine Fehlermeldung auf
      * den Logger geschrieben und die Fehlermeldung zusammen mit
      * HTTP-Status-Code 400 (Bad Request) als REST-Antwort zurückgegeben.
      * 
-     * @param ex Exception, die bei Aufruf eines REST-Endpunkts in 
-     *           dieser Klasse geworfen wurde            
+     * @param ex Exception, die bei Aufruf des REST-Endpunkt geworfen
+     *           wurde
      * 
-     * @return String mit Fehlermeldung, HTTP-Status 400 (Bad Request)
+     * @return String mit Fehlermeldung, HTTP-Status-Code 400 (Bad Request)
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> exceptionBehandeln( Exception ex ) {
@@ -88,11 +90,12 @@ public class SucheRestController {
      * 
      * @return Immer Status-Code 200 wenn Suche ausgeführt werden konnte
      *         (auch mit leerer Ergebnismenge); bei Fehler Status-Code
-     *         400. Bei erfolgreicher Suche ist in HTTP-Status-Feld
-     *         {@code X-Anzahl-Treffer} die Anzahl der Treffer enthalten.
+     *         400. Bei erfolgreicher Suche sind auch die von Methode
+     *         {@link #erzeugeAntwortHeader(Page)} erzeugten HTTP-Header
+     *         gesetzt.
      * 
-     * @throws SchlagzeilenException Wenn Suchbegriff {@code q} weniger 
-     *                               als drei Zeichen enthält. 
+     * @throws SchlagzeilenException Wenn Suchbegriff {@code q} weniger als  
+     *                               drei Zeichen enthält (nach trimmen)
      */
     @GetMapping( "/suche" )
     public ResponseEntity<List<Schlagzeile>> suche( @RequestParam("q") String q )
@@ -105,8 +108,10 @@ public class SucheRestController {
             throw new SchlagzeilenException( "Suchstring muss mindestens drei Zeichen haben" );
         }
         
-        final List<SchlagzeilenEntity> dbErgebnisList = 
-                _repo.sucheSchlagzeilen( qTrimmed, PAGE_REQUEST_MAX_50_TREFFER );
+        final Page<SchlagzeilenEntity> ergebnisPage = 
+                 _repo.sucheSchlagzeilen( qTrimmed, PAGE_REQUEST_MAX_50_TREFFER );
+        
+        final List<SchlagzeilenEntity> dbErgebnisList = ergebnisPage.getContent();
         
         final List<Schlagzeile> ergebnisList = 
                 dbErgebnisList.stream().map( entity -> {
@@ -118,14 +123,35 @@ public class SucheRestController {
             
         }).toList();
         
-        final int anzahlTreffer = ergebnisList.size();
-        LOG.info( "Anzahl Treffer für Suchbegriff \"{}\" gefunden: {}", 
-                  q, anzahlTreffer );
+        final HttpHeaders antwortHeader = erzeugeAntwortHeader( ergebnisPage );
         
-        final HttpHeaders antwortHeaders = new org.springframework.http.HttpHeaders();
-        antwortHeaders.set( "X-Anzahl-Treffer", anzahlTreffer + "" );        
-        
-        return new ResponseEntity<>( ergebnisList, antwortHeaders, OK );
+        return new ResponseEntity<>( ergebnisList, antwortHeader, OK );
+    }
+    
+    
+    /**
+     * Methode erzeugt HTTP-Header für Antwort REST-Methode {@link #suche(String)}.
+     * <br><br>
+     * 
+     * Beispiel für erzeugte Header:
+     * <pre>
+     * X-Anzahl-Treffer-Gesamt: 101
+     * X-Anzahl-Treffer-Seite: 50
+     * X-Anzahl-Seiten: 3
+     * </pre>
+     * 
+     * @param page Objekte mit Information über Status Paginierung
+     * 
+     * @return HTTP-Header für Antwort an Client
+     */
+    private HttpHeaders erzeugeAntwortHeader( Page<SchlagzeilenEntity> page ) {
+
+        final HttpHeaders antwortHeader = new HttpHeaders();
+        antwortHeader.set( "X-Anzahl-Treffer-Gesamt", page.getTotalElements()    + "" );        
+        antwortHeader.set( "X-Anzahl-Treffer-Seite" , page.getNumberOfElements() + "" );
+        antwortHeader.set( "X-Anzahl-Seiten"        , page.getTotalPages()       + "" );
+
+        return antwortHeader;
     }
     
 }
