@@ -2,8 +2,8 @@ package de.eldecker.dhbw.spring.badnews.db;
 
 /**
  * Record-Klasse für Ergebnis der Query-Methode
- * {@link SchlagzeilenRepo#countByInlandGrouped()}.
+ * {@link SchlagzeilenRepo#zaehleSchlagzeilenInlandAusland()}.
  */
-public record AnzahlByKategorie( boolean inland, 
+public record AnzahlByKategorie( boolean inland,
                                  long    anzahl ) {
 }
