@@ -67,7 +67,7 @@
                 "items": [
                   {
                     "enabled": true,
-                    "name": "q",
+                    "name": "query",
                     "value": "BAY"
                   }
                 ]
@@ -105,7 +105,7 @@
                 "items": [
                   {
                     "enabled": true,
-                    "name": "q",
+                    "name": "query",
                     "value": "Krise"
                   }
                 ]
@@ -143,7 +143,7 @@
                 "items": [
                   {
                     "enabled": true,
-                    "name": "q",
+                    "name": "query",
                     "value": "ba"
                   }
                 ]
@@ -181,8 +181,8 @@
                 "items": [
                   {
                     "enabled": true,
-                    "name": "q",
-                    "value": "Krise"
+                    "name": "query",
+                    "value": "gibt-es-nicht"
                   }
                 ]
               },
@@ -195,6 +195,102 @@
             },
             "id": "cb6b5d5e-8cb5-4484-b1ef-5bdf74953325",
             "name": "Suche nach \"gibt-es-nicht\"",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "query",
+                    "value": "Skandal"
+                  },
+                  {
+                    "enabled": true,
+                    "name": "anzahl",
+                    "value": "3"
+                  },
+                  {
+                    "enabled": true,
+                    "name": "seite",
+                    "value": "2"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/v1/suche"
+            },
+            "id": "0ce11b9a-ff4b-4c8b-aeaa-dc6db28798f9",
+            "name": "Suche nach \"skandal\" (anzahl=3, seite=2)",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "query",
+                    "value": "Skandal"
+                  },
+                  {
+                    "enabled": true,
+                    "name": "anzahl",
+                    "value": "3"
+                  },
+                  {
+                    "enabled": true,
+                    "name": "seite",
+                    "value": "9999"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/v1/suche"
+            },
+            "id": "094bc5a5-46b1-4db8-a3c5-ad29d71e621d",
+            "name": "Suche nach \"skandal\" (anzahl=3, seite=9999)",
             "headers": []
           }
         }

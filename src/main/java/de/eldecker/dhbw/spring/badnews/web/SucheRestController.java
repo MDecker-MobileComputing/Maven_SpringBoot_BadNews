@@ -32,15 +32,7 @@ import de.eldecker.dhbw.spring.badnews.model.Schlagzeile;
 public class SucheRestController {
     
     private final static Logger LOG = LoggerFactory.getLogger( SucheRestController.class );
-    
-    /**
-     * Konfiguration der Paginierung für die Such-Query: Nur die erste Seite von 
-     * Ergebnisssen (Seite mit Index 0) soll zurückgegeben werden, auf einer Seite
-     * höchstens 50 Schlagzeilen.
-     */
-    private static final PageRequest PAGE_REQUEST_MAX_50_TREFFER = PageRequest.of( 0, 50 ); 
-
-    
+        
     /** Repo-Bean für Zugriff auf Tabelle mit Schlagzeilen. */
     private SchlagzeilenRepo _repo;
     
@@ -84,9 +76,13 @@ public class SucheRestController {
      * Datei mit einigen REST-Requests zum Test dieses Endpunkts
      * mit dem Browser-Plugin "Talend API Tester".
      * 
-     * @param q Suchbegriff ("q" steht für "query"); Leerzeichen am
-     *          Anfang/Ende werden entfernt, die Groß-/Kleinschreibung
-     *          bei der Suche; Pflichtparameter!
+     * @param query Pflichtparameter mit Suchbegriff ; Leerzeichen am Anfang/Ende 
+     *              werden entfernt, die Groß-/Kleinschreibung bei der Suche.
+     *          
+     * @param seite 1-basierte Nummer der Ergebnis-Seite (Default-Wert: 1);
+     *              für max. Seitenzahl siehe Header-Feld "X-Anzahl-Seiten"
+     * 
+     * @param anzahl Anzahl Treffer pro Seite, Max-Wert 500 (Default-Wert: 10)
      * 
      * @return Immer Status-Code 200 wenn Suche ausgeführt werden konnte
      *         (auch mit leerer Ergebnismenge); bei Fehler Status-Code
@@ -98,21 +94,26 @@ public class SucheRestController {
      *                               drei Zeichen enthält (nach trimmen)
      */
     @GetMapping( "/suche" )
-    public ResponseEntity<List<Schlagzeile>> suche( @RequestParam("q") String q )
-            throws SchlagzeilenException {
+    public ResponseEntity<List<Schlagzeile>> suche( 
+            @RequestParam("query") String query, 
+            @RequestParam( value = "seite" , required = false, defaultValue = "1"  ) int seite ,
+            @RequestParam( value = "anzahl", required = false, defaultValue = "10" ) int anzahl )                                                                                                                                                                                                                                                                           
+                    throws SchlagzeilenException {
                      
-        final String qTrimmed = q.trim();
+        final String queryTrimmed = query.trim();
         
-        if ( qTrimmed.length() < 3 ) {
+        if ( queryTrimmed.length() < 3 ) {
             
             throw new SchlagzeilenException( "Suchstring muss mindestens drei Zeichen haben" );
         }
         
+        final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl ); 
+        
         final Page<SchlagzeilenEntity> ergebnisPage = 
-                 _repo.sucheSchlagzeilen( qTrimmed, PAGE_REQUEST_MAX_50_TREFFER );
-        
+                                 _repo.sucheSchlagzeilen( queryTrimmed, pageRequest );
+                
         final List<SchlagzeilenEntity> dbErgebnisList = ergebnisPage.getContent();
-        
+                
         final List<Schlagzeile> ergebnisList = 
                 dbErgebnisList.stream().map( entity -> {
             
@@ -140,13 +141,16 @@ public class SucheRestController {
      * X-Anzahl-Seiten: 3
      * </pre>
      * 
-     * @param page Objekte mit Information über Status Paginierung
+     * @param page Objekt mit einer Ergebnis-Seite (ggf. Teilmenge der Treffer) und 
+     *             Meta-Informationen wie höchste Seitennummer oder Gesamtanzahl
+     *             der Treffer
      * 
      * @return HTTP-Header für Antwort an Client
      */
     private HttpHeaders erzeugeAntwortHeader( Page<SchlagzeilenEntity> page ) {
 
         final HttpHeaders antwortHeader = new HttpHeaders();
+        
         antwortHeader.set( "X-Anzahl-Treffer-Gesamt", page.getTotalElements()    + "" );        
         antwortHeader.set( "X-Anzahl-Treffer-Seite" , page.getNumberOfElements() + "" );
         antwortHeader.set( "X-Anzahl-Seiten"        , page.getTotalPages()       + "" );
