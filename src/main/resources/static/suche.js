@@ -14,7 +14,7 @@ function onSucheButton() {
             alert( "Interner Fehler: DIV für Suchergebnis nicht gefunden." );
             return;
     }    
-    ergebnisDiv.innerHTML = "";
+    ergebnisDiv.innerHTML = ""; // vorherige Ergebnisse löschen
 
     const textfeld = document.getElementById( "suchbegriff" );
     if ( !textfeld ) {
@@ -90,19 +90,28 @@ function suchergebnisDarstellen( antwortString ) {
 
     console.log( `Anzahl Schlagzeilen erhalten: ${ergebnisArray.length}` );
 
+    if ( ergebnisArray.length === 0 ) {
+
+        alert( "Keine Schlagzeilen gefunden." );
+        return;
+    }
+
     ergebnisArray.forEach(item => {
 
-        console.log( `Schlagzeile mit ID=${item.id} gefunden: ${item.schlagzeile}` );
-
         const p = document.createElement( "p" );
-        p.textContent = item.schlagzeile;
-        ergebnisDiv.appendChild( p );
+        const a = document.createElement( "a" );
+
+        a.textContent = item.schlagzeile;
+        a.href = "/app/schlagzeile/" + item.id;
+
+        p.appendChild(a);
+        ergebnisDiv.appendChild(p);
     });
 }
 
 
 /**
- * Event-Handler für Reset-Button
+ * Event-Handler für Reset-Button: Suchfeld wird gelöscht.
  */
 function onResetButton() {
 
