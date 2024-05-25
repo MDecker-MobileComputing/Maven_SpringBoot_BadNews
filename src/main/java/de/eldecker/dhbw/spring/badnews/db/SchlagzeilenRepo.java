@@ -44,13 +44,14 @@ public interface SchlagzeilenRepo extends JpaRepository<SchlagzeilenEntity, Long
      *                   (Groß-/Kleinschreibung wird ignoriert)
      * 
      * @param pageable Objekt zur Steuerung der Paginierung (Anzahl Datensätze
-     *                 pro Seite und Nummer der Seite)
+     *                 pro Seite und Nummer der Seite); sollte Sortier-Reihenfolge
+     *                 spezifieren
      * 
-     * @return "Seite" von gefundenen Schlagzeilen (also Liste mit Teilmenge der Treffer
+     * @return "Seite" von gefundenen Schlagzeilen (also Liste mit Teilmenge der Treffer)
+     *         und zugehörigen Meta-Informationen wie Gesamtzahl der Seiten
      */
     @Query("SELECT s FROM SchlagzeilenEntity s " + 
-           "WHERE lower(s.schlagzeile) LIKE lower(concat('%', :suchstring, '%'))" +
-           "ORDER BY s.schlagzeile" )    
+           "WHERE lower(s.schlagzeile) LIKE lower(concat('%', :suchstring, '%'))" )
     Page<SchlagzeilenEntity> sucheSchlagzeilen( @Param("suchstring") String suchstring,  
                                                 Pageable pageable );
 

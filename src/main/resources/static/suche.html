@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <title>Bad News: Suche</title>
+    <meta charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+  <h1>Bad News: Suche</h1>
+
+  <p>
+    <label for="suchbegriff" class="fett">Suchbegriff:&nbsp;</label>
+    <input type="text" id="suchbegriff" name="q">
+
+    <input type="submit" value="Suchen"       onclick="return onSucheButton()" >
+    <input type="reset"  value="Zurücksetzen" onclick="return onResetButton()" >
+  </p>
+  <br><br>
+
+  <div id="ergebnis"></div>
+
+  <!-- Erst JavaScript-Datei laden, wenn DOM-Baum geladen ist. -->
+  <script src="../../suche.js"></script>  
+
+</body>

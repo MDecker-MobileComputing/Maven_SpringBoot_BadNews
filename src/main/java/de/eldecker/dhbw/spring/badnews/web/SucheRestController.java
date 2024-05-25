@@ -1,5 +1,6 @@
 package de.eldecker.dhbw.spring.badnews.web;
 
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,7 +34,11 @@ import de.eldecker.dhbw.spring.badnews.model.Schlagzeile;
 public class SucheRestController {
     
     private final static Logger LOG = LoggerFactory.getLogger( SucheRestController.class );
-        
+
+    /** Sortier-Reihenfolge für Paginierung: Aufsteigend nach Feld "id". */
+    private static final Sort SORT_ID_ASC = Sort.by( ASC, "id" );    
+    
+    
     /** Repo-Bean für Zugriff auf Tabelle mit Schlagzeilen. */
     private SchlagzeilenRepo _repo;
     
@@ -80,9 +86,12 @@ public class SucheRestController {
      *              werden entfernt, die Groß-/Kleinschreibung bei der Suche.
      *          
      * @param seite 1-basierte Nummer der Ergebnis-Seite (Default-Wert: 1);
-     *              für max. Seitenzahl siehe Header-Feld "X-Anzahl-Seiten"
+     *              für max. Seitenzahl siehe Header-Feld "X-Anzahl-Seiten";
+     *              es wird eine Exception geworfen, wenn Wert kleiner als 1
+     *              ist.
      * 
-     * @param anzahl Anzahl Treffer pro Seite, Max-Wert 500 (Default-Wert: 10)
+     * @param anzahl Anzahl Treffer pro Seite; es wird eine Exception geworfen,
+     *               wenn Wert kleiner als 1 ist.
      * 
      * @return Immer Status-Code 200 wenn Suche ausgeführt werden konnte
      *         (auch mit leerer Ergebnismenge); bei Fehler Status-Code
@@ -98,7 +107,7 @@ public class SucheRestController {
             @RequestParam("query") String query, 
             @RequestParam( value = "seite" , required = false, defaultValue = "1"  ) int seite ,
             @RequestParam( value = "anzahl", required = false, defaultValue = "10" ) int anzahl )                                                                                                                                                                                                                                                                           
-                    throws SchlagzeilenException {
+          throws SchlagzeilenException {
                      
         final String queryTrimmed = query.trim();
         
@@ -107,7 +116,7 @@ public class SucheRestController {
             throw new SchlagzeilenException( "Suchstring muss mindestens drei Zeichen haben" );
         }
         
-        final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl ); 
+        final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl, SORT_ID_ASC ); 
         
         final Page<SchlagzeilenEntity> ergebnisPage = 
                                  _repo.sucheSchlagzeilen( queryTrimmed, pageRequest );
