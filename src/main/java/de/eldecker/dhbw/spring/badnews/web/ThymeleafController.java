@@ -59,6 +59,7 @@ public class ThymeleafController {
         _checker = checker;
     }
 
+       
 
     /**
      * Wenn eine Mapping-Methode eine Exception wirft, dann wird dieser
@@ -114,12 +115,12 @@ public class ThymeleafController {
      *
      * @return Name der Template-Datei "schlagzeilen-liste.html" ohne Datei-Endung.
      * 
-     * @throws SchlagzeilenException Ungültige {@code int]}-Werte für URL-Parameter übergeben, siehe
-     *                               {@link #exceptionBehandeln(Exception, Model)}
+     * @throws SchlagzeilenException Ungültige {@code int]}-Werte für URL-Parameter übergeben, 
+     *                               siehe {@link #exceptionBehandeln(Exception, Model)}
      *
-     * @throws MethodArgumentTypeMismatchException Für URL-Parameter {@code seite} oder {@code anzahl}
-     *                                             übergebene Werte konnten nicht nach {@code int} geparst
-     *                                             werden
+     * @throws MethodArgumentTypeMismatchException Für URL-Parameter {@code seite} oder 
+     *                                             {@code anzahl} übergebene Werte konnten 
+     *                                             nicht nach {@code int} geparst werden                                             
      */
     @GetMapping( "/schlagzeilen" )
     public String liste( Model model,

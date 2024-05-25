@@ -1,12 +1,17 @@
 package de.eldecker.dhbw.spring.badnews.web;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +30,8 @@ import de.eldecker.dhbw.spring.badnews.model.Schlagzeile;
 @RequestMapping( "/api/v1" )
 public class SucheRestController {
     
+    private final static Logger LOG = LoggerFactory.getLogger( SucheRestController.class );
+    
     /**
      * Konfiguration der Paginierung für die Such-Query: Nur die erste Seite von 
      * Ergebnisssen (Seite mit Index 0) soll zurückgegeben werden, auf einer Seite
@@ -37,13 +44,34 @@ public class SucheRestController {
     
     
     /**
-     * Konstruktor für <i>Dependency Injection</i>:
+     * Konstruktor für <i>Dependency Injection</i>.
      */
     @Autowired
     public SucheRestController( SchlagzeilenRepo repo ) {
         
         _repo = repo;
     }
+
+    
+    /**
+     * Diese Methode behandelt Exceptions, die von einem der REST-Endpunkte
+     * in dieser Klasse geworfen wurde. Es wird eine Fehlermeldung auf
+     * den Logger geschrieben und die Fehlermeldung zusammen mit
+     * HTTP-Status-Code 400 (Bad Request) als REST-Antwort zurückgegeben.
+     * 
+     * @param ex Exception, die bei Aufruf eines REST-Endpunkts in 
+     *           dieser Klasse geworfen wurde            
+     * 
+     * @return String mit Fehlermeldung, HTTP-Status 400 (Bad Request)
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> exceptionBehandeln( Exception ex ) {
+
+        final String fehlerText = "Fehler bei Suchanfrage: " + ex.getMessage(); 
+        LOG.error( fehlerText );
+        
+        return new ResponseEntity<>( fehlerText, BAD_REQUEST );
+    }        
     
     
     /**
@@ -62,7 +90,7 @@ public class SucheRestController {
      *         (auch mit leerer Ergebnismenge)
      * 
      * @throws SchlagzeilenException Wenn Suchbegriff {@code q} weniger 
-     *         als drei Zeichen enthält. 
+     *                               als drei Zeichen enthält. 
      */
     @GetMapping( "/suche" )
     public ResponseEntity<List<Schlagzeile>> suche( @RequestParam("q") String q )
