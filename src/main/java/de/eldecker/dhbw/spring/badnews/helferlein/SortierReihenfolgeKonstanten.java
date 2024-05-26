@@ -14,14 +14,12 @@ public class SortierReihenfolgeKonstanten {
     /**
      * Dummy-Konstruktor, um Instanziierung dieser Klasse zu verhindern.
      */
-    private SortierReihenfolgeKonstanten() {
-        
-    }
+    private SortierReihenfolgeKonstanten() {}
     
     
     /** 
      * Sortier-Reihenfolge für Paginierung: 
-     * Aufsteigend (Ascending) nach Feld "id". 
+     * Aufsteigend (Ascending) nach Attribut "id" (Primärschlüssel). 
      */
     public static final Sort SORT_ID_ASC = Sort.by( ASC, "id" );
     

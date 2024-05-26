@@ -109,7 +109,7 @@ public class SucheRestController {
         
         if ( queryTrimmed.length() < 3 ) {
             
-            throw new SchlagzeilenException( "Suchstring muss mindestens drei Zeichen haben" );
+            throw new SchlagzeilenException( "Such-String muss mindestens drei Zeichen haben" );
         }
         
         final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl, SORT_ID_ASC ); 
