@@ -40,11 +40,9 @@ public class ThymeleafController {
 
     /** Repo-Bean für Zugriff auf Tabelle mit Schlagzeilen. */
     private SchlagzeilenRepo _repo;
-    
+
     /** Service-Bean für div. Checks im Zusammenhang mit der Paginierung. */
     private PaginierungChecker _checker;
-
-
 
 
     /**
@@ -57,7 +55,6 @@ public class ThymeleafController {
         _checker = checker;
     }
 
-       
 
     /**
      * Wenn eine Mapping-Methode eine Exception wirft, dann wird dieser
@@ -76,7 +73,7 @@ public class ThymeleafController {
      *              von {@code exception} in den Platzhalter "fehlermeldung"
      *              kopiert.
      *
-     * @return Name der Template-Datei "schlagzeilen-fehler.html" ohne Datei-Endung. 
+     * @return Name der Template-Datei "schlagzeilen-fehler.html" ohne Datei-Endung.
      */
     @ExceptionHandler(Exception.class)
     public String exceptionBehandeln( Exception exception, Model model ) {
@@ -112,13 +109,13 @@ public class ThymeleafController {
      *               Default-Wert: 10; zulässiger Bereich 1 bis 500.
      *
      * @return Name der Template-Datei "schlagzeilen-liste.html" ohne Datei-Endung.
-     * 
-     * @throws SchlagzeilenException Ungültige {@code int]}-Werte für URL-Parameter übergeben, 
+     *
+     * @throws SchlagzeilenException Ungültige {@code int]}-Werte für URL-Parameter übergeben,
      *                               siehe {@link #exceptionBehandeln(Exception, Model)}
      *
-     * @throws MethodArgumentTypeMismatchException Für URL-Parameter {@code seite} oder 
-     *                                             {@code anzahl} übergebene Werte konnten 
-     *                                             nicht nach {@code int} geparst werden                                             
+     * @throws MethodArgumentTypeMismatchException Für URL-Parameter {@code seite} oder
+     *                                             {@code anzahl} übergebene Werte konnten
+     *                                             nicht nach {@code int} geparst werden
      */
     @GetMapping( "/schlagzeilen" )
     public String liste( Model model,
@@ -157,7 +154,7 @@ public class ThymeleafController {
      *              definiert werden.
      *
      * @return Name der Template-Datei "schlagzeile-einzeln.html" ohne Datei-Endung.
-     * 
+     *
      * @throws SchlagzeilenException Keine Schlagzeile mit {@code id} gefunden
      */
     @GetMapping( "/schlagzeile/{id}" )
@@ -166,52 +163,52 @@ public class ThymeleafController {
 
         final Optional<SchlagzeilenEntity> schlagzeileOptional = _repo.findById( id );
         if ( schlagzeileOptional.isEmpty() ) {
-         
+
             final String text = format( "Keine Schlagzeile mit ID=%d gefunden.", id );
             throw new SchlagzeilenException( text );
-        }        
-        
+        }
+
         model.addAttribute( "schlagzeile", schlagzeileOptional.get() );
 
         return "schlagzeile-einzeln";
     }
-    
-    
+
+
     /**
      * Seite mit Statistik (Anzahl Inlands/Auslands-Schlagzeilen) anzeigen.
-     * 
+     *
      * @param model Objekt, in dem die Werte für die Platzhalter in der Template-Datei
      *              definiert werden.
      *
      * @return Name der Template-Datei "statistik.html" ohne Datei-Endung.
-     * 
+     *
      * @throws SchlagzeilenException Query hat mehr als zwei Ergebnisdatensätze
-     *                               zurückgeliefert 
+     *                               zurückgeliefert
      */
     @GetMapping( "/statistik" )
     public String statistik( Model model ) throws SchlagzeilenException {
-     
-        final List<AnzahlByKategorie> anzByKategorieList = 
+
+        final List<AnzahlByKategorie> anzByKategorieList =
                                         _repo.zaehleSchlagzeilenInlandAusland();
-        
-        final int listSize = anzByKategorieList.size(); 
+
+        final int listSize = anzByKategorieList.size();
         if ( listSize > 2 ) {
-            
-            throw new SchlagzeilenException( 
-                    "Mehr als zwei Einträge in Ergebnisliste für Statistik: " + 
+
+            throw new SchlagzeilenException(
+                    "Mehr als zwei Einträge in Ergebnisliste für Statistik: " +
                     listSize );
         }
 
         int summe = 0;
         for ( AnzahlByKategorie abk : anzByKategorieList ) {
-            
+
             summe += abk.anzahl();
         }
-        
+
         model.addAttribute( "statistikzeilen", anzByKategorieList );
         model.addAttribute( "summe"          , summe              );
-        
+
         return "statistik";
-    }                              
+    }
 
 }
