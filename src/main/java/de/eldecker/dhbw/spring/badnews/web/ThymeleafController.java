@@ -28,7 +28,7 @@ import de.eldecker.dhbw.spring.badnews.model.AnzahlByKategorie;
 
 
 /**
- * Controller-Klasse für Thymeleaf-Templates. Jetzt Mapping-Methode
+ * Controller-Klasse für Thymeleaf-Templates. Jede Mapping-Methode
  * gibt den String mit dem Namen der Template-Datei (ohne Datei-Endung)
  * zurück, die angezeigt werden soll.
  */

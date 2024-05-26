@@ -136,7 +136,7 @@ public class SucheRestController {
     
     
     /**
-     * Methode erzeugt HTTP-Header für Antwort REST-Methode {@link #suche(String, int, int).
+     * Methode erzeugt HTTP-Header für Antwort REST-Methode {@link #suche(String, int, int)}.
      * <br><br>
      * 
      * Beispiel für erzeugte Header:

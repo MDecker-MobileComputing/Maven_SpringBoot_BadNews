@@ -49,6 +49,8 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
      * ausgeführt.
      *
      * @param args Kommandozeilenargumente, werden nicht ausgewertet
+     * 
+     * @throws Exception Wird nicht geworfen
      */
     @Override
     public void run( ApplicationArguments args ) throws Exception {
