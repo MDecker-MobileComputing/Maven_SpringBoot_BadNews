@@ -100,7 +100,7 @@ public class SucheRestController {
      */
     @GetMapping( "/suche" )
     public ResponseEntity<List<Schlagzeile>> suche( 
-            @RequestParam("query") String query, 
+            @RequestParam( value = "query" , required = true                       ) String query, 
             @RequestParam( value = "seite" , required = false, defaultValue = "1"  ) int seite ,
             @RequestParam( value = "anzahl", required = false, defaultValue = "10" ) int anzahl )                                                                                                                                                                                                                                                                           
           throws SchlagzeilenException {

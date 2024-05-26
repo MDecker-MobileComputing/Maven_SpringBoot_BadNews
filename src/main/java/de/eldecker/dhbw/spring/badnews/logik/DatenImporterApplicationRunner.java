@@ -49,7 +49,7 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
      * ausgeführt.
      *
      * @param args Kommandozeilenargumente, werden nicht ausgewertet
-     * 
+     *
      * @throws Exception Wird nicht geworfen
      */
     @Override
@@ -65,12 +65,17 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             LOG.warn( "Datenbank enthält überhaupt keine Schlagzeilen, werde {} Schlagzeilen erzeugen.",
                       ANZAHL_SCHLAGZEILEN );
 
-            final List<SchlagzeilenEntity> schlagzeilenListe = 
+            final long zeitpunktStart = System.nanoTime();
+
+            final List<SchlagzeilenEntity> schlagzeilenListe =
                     _schlagzeilenErzeugen.erzeugetZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
 
             _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch Operation
 
-            LOG.warn( "Zufällige Schlagzeilen erzeugt und in DB gespeichert." );
+            final long zeitpunktEnde = System.nanoTime();
+            final long laufzeit      = ( zeitpunktEnde - zeitpunktStart ) / 1_000_000;
+
+            LOG.warn( "Zufällige Schlagzeilen in {} ms erzeugt und in DB gespeichert.", laufzeit );
         }
     }
 
