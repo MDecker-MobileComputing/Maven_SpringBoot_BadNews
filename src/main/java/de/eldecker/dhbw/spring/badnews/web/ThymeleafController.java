@@ -82,7 +82,7 @@ public class ThymeleafController {
 
         if ( exception instanceof MethodArgumentTypeMismatchException ex ) {
 
-            fehlertext = format( "Ungültiger Wert für URL-Parameter \"%s\" übergeben: \"%s\"",
+            fehlertext = format( "Ungültiger Wert für Parameter \"%s\" übergeben: \"%s\"",
                                  ex.getName(), ex.getValue() );
         } else {
 
