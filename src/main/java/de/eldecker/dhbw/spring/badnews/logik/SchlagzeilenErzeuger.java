@@ -16,13 +16,11 @@ import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 /**
  * Service-Bean, die zufällige (Negativ-)Schlagzeilen erzeugt.
  */
+
+
 @Service
 public class SchlagzeilenErzeuger {
 
-    private final static Logger LOG = LoggerFactory.getLogger( SchlagzeilenErzeuger.class );
-
-
-    /** Array mit negativen Ereignissen. */
     public static final String[] EREIGNISSE_ARRAY = {
             "Altersarmut", "Amoklauf", "Ausgangs-Sperre", "Ärztemangel", "Ausschreitungen",
             "Bankrott", "Bildungsnotstand", "Busunfall", "Brandstiftung", "Chemie-Unfall",
@@ -37,7 +35,6 @@ public class SchlagzeilenErzeuger {
             "Wirtschaftskrise", "Vulkanausbruch"
         };
 
-    /** Array mit den deutschen Bundesländern/Stadtstaaten. */
     public static final String[] ORTE_DEUTSCHLAD_ARRAY = {
             "Baden-Württemberg", "Bayern", "Bremen", "Berlin", "Brandenburg",
             "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen",
@@ -45,7 +42,6 @@ public class SchlagzeilenErzeuger {
             "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen"
         };
 
-    /** Array mit Ländern (internationale Staaten). */
     public static final String[] ORTE_NATIONEN_ARRAY = {
             "Albanien", "Amerika", "Andorra", "Argentinien", "Armenien", "Australien",
             "Brasilien", "Belgien", "Bosnien und Herzegowina", "Bulgarien", "China",
@@ -61,6 +57,8 @@ public class SchlagzeilenErzeuger {
         };
 
 
+    private final static Logger LOG = LoggerFactory.getLogger( SchlagzeilenErzeuger.class );
+    
     /** Zufallsgenerator */
     private final static Random _random = new Random();
 
@@ -86,7 +84,7 @@ public class SchlagzeilenErzeuger {
      * @return Zufällig ausgewählter String aus {@code stringArray};
      *         leerer String, wenn {@code stringArray.length == 0}.
      */
-    private String getZufallsElement(String[] stringArray) {
+    private String getZufallsElement( String[] stringArray ) {
 
         final int laenge = stringArray.length;
         if ( laenge == 0) {

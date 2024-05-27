@@ -30,17 +30,17 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
     private SchlagzeilenRepo _schlagzeilenRepo;
 
     /** Service-Bean zur Erzeugung von zufälligen Negativschlagzeilen. */
-    private SchlagzeilenErzeuger _schlagzeilenErzeugen;
+    private SchlagzeilenErzeuger _schlagzeilenErzeuger;
 
 
     /**
      * Konstruktor für <i>Dependency Injection</i>.
      */
-    public DatenImporterApplicationRunner( SchlagzeilenRepo  schlagzeilenRepo,
-                                           SchlagzeilenErzeuger schlagzeilenErzeuegen ) {
+    public DatenImporterApplicationRunner( SchlagzeilenRepo     schlagzeilenRepo,
+                                           SchlagzeilenErzeuger schlagzeilenErzeuger ) {
 
         _schlagzeilenRepo     = schlagzeilenRepo;
-        _schlagzeilenErzeugen = schlagzeilenErzeuegen;
+        _schlagzeilenErzeuger = schlagzeilenErzeuger;
     }
 
 
@@ -68,7 +68,7 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             final long zeitpunktStart = System.nanoTime();
 
             final List<SchlagzeilenEntity> schlagzeilenListe =
-                    _schlagzeilenErzeugen.erzeugetZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
+                    _schlagzeilenErzeuger.erzeugetZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
 
             _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch Operation
 
