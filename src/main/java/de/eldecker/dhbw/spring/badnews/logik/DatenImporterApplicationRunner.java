@@ -75,7 +75,8 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             final long zeitpunktEnde = System.nanoTime();
             final long laufzeit      = ( zeitpunktEnde - zeitpunktStart ) / 1_000_000;
 
-            LOG.warn( "Zufällige Schlagzeilen in {} ms erzeugt und in DB gespeichert.", laufzeit );
+            LOG.warn( "{} zufällige Schlagzeilen in {} ms erzeugt und in DB gespeichert.",
+                      ANZAHL_SCHLAGZEILEN, laufzeit );
         }
     }
 
