@@ -47,9 +47,9 @@ public class SchlagzeilenEntity {
 
     
     /**
-     * Konstruktor für Inlands-Schlagzeile.
+     * Convenience-Konstruktor für Inlands-Schlagzeile.
      * 
-     * @param schlagzeile Text der Schlagzeile
+     * @param schlagzeile Text der Inlands-Schlagzeile
      */
     public SchlagzeilenEntity( String schlagzeile ) {
         
