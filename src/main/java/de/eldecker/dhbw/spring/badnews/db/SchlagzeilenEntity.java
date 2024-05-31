@@ -180,11 +180,10 @@ public class SchlagzeilenEntity {
         
         if ( obj == null ) { return false; }
         
-        if ( obj instanceof SchlagzeilenEntity other ) {
+        if ( obj instanceof SchlagzeilenEntity anderes ) {
 
-            return schlagzeile.equals( other.schlagzeile ) &&
-                   inland == other.inland;
-            
+            return Objects.equals( schlagzeile, anderes.schlagzeile ) &&                    
+                   inland == anderes.inland;            
         } else {
             
             return false;
