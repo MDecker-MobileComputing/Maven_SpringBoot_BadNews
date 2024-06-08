@@ -16,8 +16,6 @@ import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 /**
  * Service-Bean, die zufällige (Negativ-)Schlagzeilen erzeugt.
  */
-
-
 @Service
 public class SchlagzeilenErzeuger {
 
