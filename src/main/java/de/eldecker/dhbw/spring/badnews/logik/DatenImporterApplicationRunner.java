@@ -68,7 +68,7 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             final long zeitpunktStart = System.nanoTime();
 
             final List<SchlagzeilenEntity> schlagzeilenListe =
-                    _schlagzeilenErzeuger.erzeugetZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
+                    _schlagzeilenErzeuger.erzeugeZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
 
             _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch Operation
 

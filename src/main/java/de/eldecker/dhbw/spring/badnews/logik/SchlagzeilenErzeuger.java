@@ -138,7 +138,7 @@ public class SchlagzeilenErzeuger {
      *
      * @return Liste mit Schlagzeilen, kann leer sein aber nicht {@code null}
      */
-    public List<SchlagzeilenEntity> erzeugetZufallsSchlagzeilen( int anzahl ) {
+    public List<SchlagzeilenEntity> erzeugeZufallsSchlagzeilen( int anzahl ) {
 
         if ( anzahl < 1 ) {
 
