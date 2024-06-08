@@ -73,10 +73,10 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch Operation
 
             final long zeitpunktEnde = System.nanoTime();
-            final long laufzeit      = ( zeitpunktEnde - zeitpunktStart ) / 1_000_000;
+            final long laufzeit_ms   = ( zeitpunktEnde - zeitpunktStart ) / 1_000_000;
 
             LOG.warn( "{} zufällige Schlagzeilen in {} ms erzeugt und in DB gespeichert.",
-                      ANZAHL_SCHLAGZEILEN, laufzeit );
+                      ANZAHL_SCHLAGZEILEN, laufzeit_ms );
         }
     }
 
