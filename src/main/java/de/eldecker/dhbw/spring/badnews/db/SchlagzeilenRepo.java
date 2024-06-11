@@ -25,34 +25,34 @@ import org.springframework.data.repository.query.Param;
 public interface SchlagzeilenRepo extends JpaRepository<SchlagzeilenEntity, Long> {
 
     /**
-     * Query-Methode mit JPQL-Query zum Zählen der Anzahl der 
+     * Query-Methode mit JPQL-Query zum Zählen der Anzahl der
      * Inlands- und Auslands-Nachrichten.
-     * 
-     * @return Liste mit zwei Element (je einen mit {@code inland=true} 
+     *
+     * @return Liste mit zwei Element (je einen mit {@code inland=true}
      *         und für {@inland=false}
      */
     @Query( "SELECT new de.eldecker.dhbw.spring.badnews.model.AnzahlByKategorie( s.inland, COUNT(s) ) " +
             "FROM SchlagzeilenEntity s " +
             "GROUP BY s.inland" )
     List<AnzahlByKategorie> zaehleSchlagzeilenInlandAusland();
-    
-    
+
+
     /**
-     * Textsuche nach Schlagzeilen. 
-     * 
+     * Textsuche nach Schlagzeilen.
+     *
      * @param suchstring Teilstring, der in Schlagzeilen enthalten sein muss
      *                   (Groß-/Kleinschreibung wird ignoriert)
-     * 
+     *
      * @param pageable Objekt zur Steuerung der Paginierung (Anzahl Datensätze
      *                 pro Seite und Nummer der Seite); sollte Sortier-Reihenfolge
      *                 spezifieren
-     * 
+     *
      * @return "Seite" von gefundenen Schlagzeilen (also Liste mit Teilmenge der Treffer)
      *         und zugehörigen Meta-Informationen wie Gesamtzahl der Seiten
      */
-    @Query("SELECT s FROM SchlagzeilenEntity s " + 
-           "WHERE lower(s.schlagzeile) LIKE lower(concat('%', :suchstring, '%'))" )
-    Page<SchlagzeilenEntity> sucheSchlagzeilen( @Param("suchstring") String suchstring,  
+    @Query( "SELECT s FROM SchlagzeilenEntity s " +
+            "WHERE lower(s.schlagzeile) LIKE lower(concat('%', :suchstring, '%'))" )
+    Page<SchlagzeilenEntity> sucheSchlagzeilen( @Param("suchstring") String suchstring,
                                                 Pageable pageable );
 
 }
