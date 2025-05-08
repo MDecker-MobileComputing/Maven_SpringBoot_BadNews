@@ -56,7 +56,7 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
     public void run( ApplicationArguments args ) throws Exception {
 
         final int anzahlSchlagzeilen = (int) _schlagzeilenRepo.count(); // Methode aus Interface CrudRepository
-        if ( anzahlSchlagzeilen > 0) {
+        if ( anzahlSchlagzeilen > 0 ) {
 
             LOG.info( "Datenbank enthält schon {} Schlagzeilen, es werden keine neuen hinzugefügt.",
                       anzahlSchlagzeilen );
@@ -65,7 +65,7 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             LOG.warn( "Datenbank enthält überhaupt keine Schlagzeilen, werde {} Schlagzeilen erzeugen.",
                       ANZAHL_SCHLAGZEILEN );
 
-            final long zeitpunktStart = System.nanoTime();
+            final long zeitpunktStart = System.nanoTime(); // monotone Uhr
 
             final List<SchlagzeilenEntity> schlagzeilenListe =
                     _schlagzeilenErzeuger.erzeugeZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
