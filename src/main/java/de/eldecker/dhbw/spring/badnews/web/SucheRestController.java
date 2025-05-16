@@ -78,7 +78,7 @@ public class SucheRestController {
      * Datei mit einigen REST-Requests zum Test dieses Endpunkts
      * mit dem Browser-Plugin "Talend API Tester".
      * 
-     * @param query Pflichtparameter mit Suchbegriff ; Leerzeichen am Anfang/Ende 
+     * @param query Pflichtparameter mit Suchbegriff; Leerzeichen am Anfang/Ende 
      *              werden entfernt, die Groß-/Kleinschreibung bei der Suche.
      *          
      * @param seite 1-basierte Nummer der Ergebnis-Seite (Default-Wert: 1);

@@ -70,7 +70,7 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             final List<SchlagzeilenEntity> schlagzeilenListe =
                     _schlagzeilenErzeuger.erzeugeZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
 
-            _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch Operation
+            _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch-Operation
 
             final long zeitpunktEnde = System.nanoTime();
             final long laufzeit_ms   = ( zeitpunktEnde - zeitpunktStart ) / 1_000_000;
