@@ -148,9 +148,7 @@ public class SchlagzeilenErzeuger {
 
         final List<SchlagzeilenEntity> ergebnisListe = new ArrayList<>( anzahl );
 
-        final SchlagzeilenEntity[] ergebnisArray = new SchlagzeilenEntity[ anzahl ];
-
-        for ( int i = 0 ; i < ergebnisArray.length; i++ ) {
+        for ( int i = 0 ; i < anzahl; i++ ) {
 
             final SchlagzeilenEntity entity = erzeugeZufallsSchlagzeile();
             ergebnisListe.add( entity );
