@@ -63,7 +63,8 @@ public class SchlagzeilenEntity {
      *
      * @param schlagzeile Text der Schlagzeile
      *
-     * @param inland {@code true} für Inlands-Schlagzeile, sonst {@code false}
+     * @param inland {@code true} für Inlands-Schlagzeile, 
+     *               sonst {@code false}
      */
     public SchlagzeilenEntity( String schlagzeile, boolean inland ) {
 
@@ -121,7 +122,7 @@ public class SchlagzeilenEntity {
 
 
     /**
-     * Setter für Flag für Inlands-/Auslands-Nachrichten
+     * Setter für Flag für Inlands-/Auslands-Nachrichten.
      *
      * @param inland {@code true} für Inlands-Schlagzeile, sonst {@code false}
      */
