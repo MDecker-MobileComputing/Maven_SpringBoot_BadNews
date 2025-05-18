@@ -50,11 +50,11 @@ Konfiguration in Datei `prometheus.yml`, damit Prometheus regelmäßig die über
 Metriken einsammelt:
 
 ```
-    - job_name: "spring-actuator"
-        metrics_path: "/actuator/prometheus"
-        scrape_interval: 11s
-        static_configs:
-            - targets: ["192.168.0.100:8080"]
+  - job_name: "spring-actuator"
+      metrics_path: "/actuator/prometheus"
+      scrape_interval: 11s
+      static_configs:
+          - targets: ["192.168.0.100:8080"]
 ```                            
 
 Dieser Eintrag ist unter `scrape_configs` hinzuzufügen.
@@ -63,6 +63,11 @@ Bitte die IP-Adresse (hier: `192.168.0.100`) und ggf. auch die Port-Nummer (hier
 Mit `scrape_interval` wird festgelegt, dass die Metriken alle 11 Sekunden abgerufen werden;
 der Default-Wert für `scrape_interval` ist `15s`
 ([Quelle](https://prometheus.io/docs/prometheus/latest/getting_started/#configuring-prometheus-to-monitor-itself)).
+
+<br>
+
+Per Default speichert Prometheus die Metriken 14 Tage lang 
+([Quelle](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects)).
 
 <br>
 
