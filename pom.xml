@@ -54,6 +54,28 @@
 
             Endpunkt für Abfrage durch Prometheus: http://localhost:8080/actuator/prometheus
             Quelle: https://www.baeldung.com/spring-boot-prometheus
+
+            Konfiguration von Prometheus: 
+                In Datei prometheus.yml unter dem Abschnitt "scrape_configs" hinzufügen (IP-Adresse anpassen):
+                    - job_name: "spring-actuator"
+                        metrics_path: "/actuator/prometheus"
+                        scrape_interval: 11s
+                        static_configs:
+                            - targets: ["192.168.0.100:8080"]
+
+            Nach dem Starten ist Prometheus unter http://localhost:9090 erreichbar.
+
+            Beispiele für Metriken, die auf Prometheus-UI unter "Query | Graph" angezeigt werden können:
+                system_cpu_usage
+                logback_events_total # Anzahl Log-Nachrichten auf verschiedlichen Log-Leveln
+
+                PromQL-Queries: 
+                    Durchschnittlichen Antwortzeit in den letzten 5 Minuten:
+                        rate(http_server_requests_seconds_sum[5m]) / rate(http_server_requests_seconds_count[5m])
+                    Anzahl der HTTP-Requests in den letzten 5 Minuten:
+                        increase(http_server_requests_seconds_count[5m])
+                    Anzahl Log-Nachrichten mit Level "ERROR" in den letzten 5 Minuten:
+                        increase(logback_events_total{level="error"}[15m])
           -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
