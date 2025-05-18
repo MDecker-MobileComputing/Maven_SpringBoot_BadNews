@@ -22,6 +22,7 @@
     </properties>
     
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -45,6 +46,27 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- 
+            In application.properties dazu:
+                management.endpoints.web.exposure.include=*
+                management.endpoint.health.show-details=always
+
+            Endpunkt für Abfrage durch Prometheus: http://localhost:8080/actuator/prometheus
+            Quelle: https://www.baeldung.com/spring-boot-prometheus
+          -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.15.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
