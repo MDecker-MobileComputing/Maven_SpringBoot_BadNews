@@ -61,7 +61,7 @@ Dieser Eintrag ist unter `scrape_configs` hinzuzufügen.
 
 Bitte die IP-Adresse (hier: `192.168.0.100`) und ggf. auch die Port-Nummer (hier: `8080`) anpassen.
 Mit `scrape_interval` wird festgelegt, dass die Metriken alle 11 Sekunden abgerufen werden;
-der Default-Wert für `scrape_interval` ist `15s? 
+der Default-Wert für `scrape_interval` ist `15s`
 ([Quelle](https://prometheus.io/docs/prometheus/latest/getting_started/#configuring-prometheus-to-monitor-itself)).
 
 <br>
