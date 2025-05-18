@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenRepo;
+import de.eldecker.dhbw.spring.badnews.helferlein.EigenePrometheusMetrik;
 import de.eldecker.dhbw.spring.badnews.helferlein.SchlagzeilenException;
 import de.eldecker.dhbw.spring.badnews.model.Schlagzeile;
 
@@ -38,14 +39,22 @@ public class SucheRestController {
     /** Repo-Bean für Zugriff auf Tabelle mit Schlagzeilen. */
     private SchlagzeilenRepo _repo;
     
+    /** 
+     * Bean, um eigene Metrik "Gesamtanzahl Suchvorgänge" mit Micrometer für Prometheus
+     * bereitzustellen.
+     */
+    private EigenePrometheusMetrik _eigeneMetrik;
+    
     
     /**
      * Konstruktor für <i>Dependency Injection</i>.
      */
     @Autowired
-    public SucheRestController( SchlagzeilenRepo repo ) {
+    public SucheRestController( SchlagzeilenRepo repo, 
+                                EigenePrometheusMetrik eigeneMetrik ) {
         
-        _repo = repo;
+        _repo         = repo;
+        _eigeneMetrik = eigeneMetrik;
     }
 
     
@@ -111,6 +120,8 @@ public class SucheRestController {
             
             throw new SchlagzeilenException( "Such-String muss mindestens drei Zeichen haben" );
         }
+        
+        _eigeneMetrik.erhoeheAnzahlSuchvorgaenge();
         
         final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl, SORT_ID_ASC ); 
         

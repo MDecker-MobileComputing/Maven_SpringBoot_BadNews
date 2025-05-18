@@ -38,6 +38,15 @@ Einträge in [application.properties](src/main/resources/application.properties)
 management.endpoints.web.exposure.include=prometheus,health
 management.endpoint.health.show-details=always
 ```
+
+<br>
+
+Die Metriken können dann als Textdatei (kein JSON-Format) vom folgenden Pfad abgerufen werden:
+http://localhost:8080/actuator/prometheus
+
+siehe [hier](https://gist.github.com/MDecker-MobileComputing/1689892114e48f31df71ae0e6a0aa8d8)
+für ein Beispiel.
+
 <br>
 
 ----
@@ -99,5 +108,26 @@ können auch komplexere Abfragen gestellt werden, z.B.:
   `increase(http_server_requests_seconds_count[5m])`
 * Anzahl Log-Nachrichten mit Level "ERROR" in den letzten 5 Minuten:
   `increase(logback_events_total{level="error"}[5m])`
+
+<br>
+
+----
+
+## Eigene Metrik ##
+
+<br>
+
+In der Klasse `EigenePrometheusMetrik` wird eine eigene Metrik definiert, die die Gesamtanzahl der Suchvorgänge
+beschreibt. Technischer Name dieser Metrik: `badnews_suchvorgaenge_total`
+
+<br>
+
+Beispiel für Zeilen für diese Metriken in der von Mikrometer bereitgestellten Textdatei für insgesamt zwei Suchvorgänge:
+
+```
+ # HELP badnews_suchvorgaenge_total Anzahl der Suchvorgänge
+ # TYPE badnews_suchvorgaenge_total counter
+ badnews_suchvorgaenge_total{funktion="suche",umgebung="development"} 2.0
+ ```
 
 <br>
