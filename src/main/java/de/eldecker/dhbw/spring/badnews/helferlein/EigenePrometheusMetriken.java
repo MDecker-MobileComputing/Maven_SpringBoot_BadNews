@@ -27,18 +27,37 @@ public class EigenePrometheusMetriken {
     /** 
      * Zähler für Metrik mit Gesamtanzahl der Suchvorgänge, siehe {@link SucheRestController}.
      * Technischer Name der Metrik (z.B. für PromQL-Abfrage): 
-     * {@code badnews_suchvorgaenge_total} 
+     * {@code badnews_suchvorgaenge_total}  
+     * <br><br>
      * 
-     * <br>
      * PomQL-Query für Anzahl Suchvorgänge in den letzten 5 Minuten:
-     * {@code increase(badnews_suchvorgaenge_total[5m])}
+     * <pre>increase(badnews_suchvorgaenge_total[5m])</pre>
      */ 
     private final Counter _counterSuchvorgaenge;
     
     /**
-     * Timer zur Messung Suchdauer.
+     * Timer zur Messung der Dauer für die Erzeugung der Datensätze. 
+     * Technische Namen der Metriken:
+     * <pre>
+     * badnews_datenerzeugung_seconds_max
+     * badnews_datenerzeugung_seconds_sum
+     * badnews_datenerzeugung_seconds_count
+     * </pre>
+     * 
+     * PromQL-Queries:
+     * <ul>
+     * 	<li>Anzahl Datenerzeugungsvorgänge: 
+     *      <pre>badnews_datenerzeugung_seconds_count</pre>
+     *  </li>
+     *  <li>Gesamtdauer aller Datenerzeugungen
+     *      <pre>badnews_datenerzeugung_seconds_sum</pre>
+     *  </li>
+     *  <li>Durchschnittliche Dauer Datenerzeugung: 
+     *      <pre>badnews_datenerzeugung_seconds_sum / badnews_datenerzeugung_seconds_count</pre>
+     *  </li>
+     * </ul>
      */
-    private final Timer _timerSuchvorgaenge;
+    private final Timer _timeDatenerzeugung;
     
     
     /**
@@ -54,11 +73,9 @@ public class EigenePrometheusMetriken {
                               "funktion", "suche" ) // Tags: Key-Value-Paare
                        .register( meterRegistry );
       
-        _timerSuchvorgaenge = 
-        		Timer.builder ( "badnews_suchdauer" )
-        		     .description( "Dauer Suchvorgänge" )
-                     .tags( "umgebung", "development",  
-                            "funktion", "suche" )
+        _timeDatenerzeugung = 
+        		Timer.builder ( "badnews_datenerzeugung" )
+        		     .description( "Dauer Datenerzeugung" )
                      .register( meterRegistry );        
     }
     
@@ -74,13 +91,13 @@ public class EigenePrometheusMetriken {
     
     
     /**
-     * Getter für Timer für Zeitmessung Suchdauer.
+     * Getter für Timer, mit dem Dauer der Datenerzeugung gemessen werden kann.
      * 
-     * @return Timer, mit dem Zeitmessung für Suchvorgang durchgeführt werden kann.
+     * @return Timer für Messung Dauer der Datenerzeugung
      */
-    public Timer getTimerFuerSuchvorgang() {
+    public Timer getTimerFuerDatenerzeugung() {
     	
-    	return _timerSuchvorgaenge;
+    	return _timeDatenerzeugung;
     }
     
 }

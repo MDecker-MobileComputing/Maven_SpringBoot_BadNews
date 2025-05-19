@@ -189,7 +189,7 @@ public class ThymeleafController {
     public String statistik( Model model ) throws SchlagzeilenException {
 
         final List<AnzahlByKategorie> anzByKategorieList =
-                                        _repo.zaehleSchlagzeilenInlandAusland();
+                                       		_repo.zaehleSchlagzeilenInlandAusland();
 
         final int listSize = anzByKategorieList.size();
         if ( listSize > 2 ) {

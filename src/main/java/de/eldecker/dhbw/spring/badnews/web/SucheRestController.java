@@ -24,7 +24,6 @@ import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenRepo;
 import de.eldecker.dhbw.spring.badnews.helferlein.EigenePrometheusMetriken;
 import de.eldecker.dhbw.spring.badnews.helferlein.SchlagzeilenException;
 import de.eldecker.dhbw.spring.badnews.model.Schlagzeile;
-import io.micrometer.core.instrument.Timer;
 
 
 /**
@@ -124,13 +123,8 @@ public class SucheRestController {
         _eigeneMetriken.erhoeheAnzahlSuchvorgaenge();
         
         final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl, SORT_ID_ASC );
-
-        // Zeit für Suchvorgang messen
-        final Timer suchVorgangTimer = _eigeneMetriken.getTimerFuerSuchvorgang();                 
-        final Page<SchlagzeilenEntity> ergebnisPage = 
-							        		suchVorgangTimer.record( 
-							        				() -> _repo.sucheSchlagzeilen( queryTrimmed, pageRequest ) 
-							        		); 
+                 
+        final Page<SchlagzeilenEntity> ergebnisPage = _repo.sucheSchlagzeilen( queryTrimmed, pageRequest ); 
         
         final List<SchlagzeilenEntity> dbErgebnisList = ergebnisPage.getContent();
         

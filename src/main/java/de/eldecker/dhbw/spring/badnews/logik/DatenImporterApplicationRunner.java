@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenRepo;
+import de.eldecker.dhbw.spring.badnews.helferlein.EigenePrometheusMetriken;
 
 
 /**
@@ -31,16 +32,22 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
 
     /** Service-Bean zur Erzeugung von zufälligen Negativschlagzeilen. */
     private SchlagzeilenErzeuger _schlagzeilenErzeuger;
+    
+    /** Bean für Messung Dauer für Datenerzeugung. */
+    private EigenePrometheusMetriken _prometheusMetriken;
 
 
     /**
      * Konstruktor für <i>Dependency Injection</i>.
      */
-    public DatenImporterApplicationRunner( SchlagzeilenRepo     schlagzeilenRepo,
-                                           SchlagzeilenErzeuger schlagzeilenErzeuger ) {
+    public DatenImporterApplicationRunner( SchlagzeilenRepo         schlagzeilenRepo,
+                                           SchlagzeilenErzeuger     schlagzeilenErzeuger,
+                                           EigenePrometheusMetriken prometheusMetriken 
+                                         ) {
 
         _schlagzeilenRepo     = schlagzeilenRepo;
         _schlagzeilenErzeuger = schlagzeilenErzeuger;
+        _prometheusMetriken   = prometheusMetriken;
     }
 
 
@@ -65,18 +72,19 @@ public class DatenImporterApplicationRunner implements ApplicationRunner {
             LOG.warn( "Datenbank enthält überhaupt keine Schlagzeilen, werde {} Schlagzeilen erzeugen.",
                       ANZAHL_SCHLAGZEILEN );
 
-            final long zeitpunktStart = System.nanoTime(); // monotone Uhr
+            _prometheusMetriken.getTimerFuerDatenerzeugung().record(
+            		
+            		() -> {
+            			
+                        final List<SchlagzeilenEntity> schlagzeilenListe =
+                                _schlagzeilenErzeuger.erzeugeZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
 
-            final List<SchlagzeilenEntity> schlagzeilenListe =
-                    _schlagzeilenErzeuger.erzeugeZufallsSchlagzeilen( ANZAHL_SCHLAGZEILEN );
+                        _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch-Operation
 
-            _schlagzeilenRepo.saveAll( schlagzeilenListe ); // Batch-Operation
-
-            final long zeitpunktEnde = System.nanoTime();
-            final long laufzeit_ms   = ( zeitpunktEnde - zeitpunktStart ) / 1_000_000;
-
-            LOG.warn( "{} zufällige Schlagzeilen in {} ms erzeugt und in DB gespeichert.",
-                      ANZAHL_SCHLAGZEILEN, laufzeit_ms );
+                        LOG.warn( "{} zufällige Schlagzeilen erzeugt und in DB gespeichert.", 
+                        		  ANZAHL_SCHLAGZEILEN );             			
+            		}
+            );            
         }
     }
 
