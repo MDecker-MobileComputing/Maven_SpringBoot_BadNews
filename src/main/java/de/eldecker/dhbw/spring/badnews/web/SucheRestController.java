@@ -21,9 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenEntity;
 import de.eldecker.dhbw.spring.badnews.db.SchlagzeilenRepo;
-import de.eldecker.dhbw.spring.badnews.helferlein.EigenePrometheusMetrik;
+import de.eldecker.dhbw.spring.badnews.helferlein.EigenePrometheusMetriken;
 import de.eldecker.dhbw.spring.badnews.helferlein.SchlagzeilenException;
 import de.eldecker.dhbw.spring.badnews.model.Schlagzeile;
+import io.micrometer.core.instrument.Timer;
 
 
 /**
@@ -40,10 +41,9 @@ public class SucheRestController {
     private SchlagzeilenRepo _repo;
     
     /** 
-     * Bean, um eigene Metrik "Gesamtanzahl Suchvorgänge" mit Micrometer für Prometheus
-     * bereitzustellen.
+     * Bean, um Messwerte für eigene Metriken zu erheben.
      */
-    private EigenePrometheusMetrik _eigeneMetrik;
+    private EigenePrometheusMetriken _eigeneMetriken;
     
     
     /**
@@ -51,10 +51,10 @@ public class SucheRestController {
      */
     @Autowired
     public SucheRestController( SchlagzeilenRepo repo, 
-                                EigenePrometheusMetrik eigeneMetrik ) {
+                                EigenePrometheusMetriken eigeneMetrik ) {
         
         _repo         = repo;
-        _eigeneMetrik = eigeneMetrik;
+        _eigeneMetriken = eigeneMetrik;
     }
 
     
@@ -121,15 +121,19 @@ public class SucheRestController {
             throw new SchlagzeilenException( "Such-String muss mindestens drei Zeichen haben" );
         }
         
-        _eigeneMetrik.erhoeheAnzahlSuchvorgaenge();
+        _eigeneMetriken.erhoeheAnzahlSuchvorgaenge();
         
-        final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl, SORT_ID_ASC ); 
-        
+        final PageRequest pageRequest = PageRequest.of( seite - 1, anzahl, SORT_ID_ASC );
+
+        // Zeit für Suchvorgang messen
+        final Timer suchVorgangTimer = _eigeneMetriken.getTimerFuerSuchvorgang();                 
         final Page<SchlagzeilenEntity> ergebnisPage = 
-                                 _repo.sucheSchlagzeilen( queryTrimmed, pageRequest );
-                
+							        		suchVorgangTimer.record( 
+							        				() -> _repo.sucheSchlagzeilen( queryTrimmed, pageRequest ) 
+							        		); 
+        
         final List<SchlagzeilenEntity> dbErgebnisList = ergebnisPage.getContent();
-                
+        
         final List<Schlagzeile> ergebnisList = 
                 dbErgebnisList.stream().map( entity -> {
             
@@ -139,6 +143,7 @@ public class SucheRestController {
                     return new Schlagzeile( idInt, text );
             
         }).toList();
+
         
         final HttpHeaders antwortHeader = erzeugeAntwortHeader( ergebnisPage );
         
