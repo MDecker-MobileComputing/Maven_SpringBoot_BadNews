@@ -2,7 +2,7 @@
 
 <br>
 
-Die in diesem Repo enthaltene Spring-Boot-Anwendung ist so konfiguriert, dass sie über einen speziellen REST-Endpunkt 
+Die in diesem Repo enthaltene Spring-Boot-Anwendung ist so konfiguriert, dass sie über einen speziellen REST-Endpunkt
 (sog. [Actuator](https://docs.spring.io/spring-boot/docs/2.5.6/reference/html/actuator.html))
 Metriken im Format für das System-Monitoring-Tool [Prometheus](https://prometheus.io/) zur Verfügung stellt.
 
@@ -59,23 +59,23 @@ Konfiguration in Datei `prometheus.yml`, damit Prometheus regelmäßig die über
 Metriken einsammelt:
 
 ```
-  - job_name: "spring-actuator"
-      metrics_path: "/actuator/prometheus"
-      scrape_interval: 11s
-      static_configs:
-          - targets: ["192.168.0.100:8080"]
-```                            
+- job_name: "spring-actuator"
+    metrics_path: "/actuator/prometheus"
+    scrape_interval: 11s
+    static_configs:
+        - targets: ["192.168.0.100:8080"]
+```
 
-Dieser Eintrag ist unter `scrape_configs` hinzuzufügen.
+Dieser Eintrag ist unter `scrape_configs` hinzuzufügen; bitte die IP-Adresse (hier: `192.168.0.100`) und ggf. auch die Port-Nummer
+(hier: `8080`) im von `targets` referenzierten Array anpassen.
 
-Bitte die IP-Adresse (hier: `192.168.0.100`) und ggf. auch die Port-Nummer (hier: `8080`) anpassen.
 Mit `scrape_interval` wird festgelegt, dass die Metriken alle 11 Sekunden abgerufen werden;
 der Default-Wert für `scrape_interval` ist `15s`
 ([Quelle](https://prometheus.io/docs/prometheus/latest/getting_started/#configuring-prometheus-to-monitor-itself)).
 
 <br>
 
-Per Default speichert Prometheus die Metriken 14 Tage lang 
+Per Default speichert Prometheus die Metriken 14 Tage lang
 ([Quelle](https://prometheus.io/docs/prometheus/latest/storage/#operational-aspects)).
 
 <br>
@@ -86,7 +86,7 @@ Per Default speichert Prometheus die Metriken 14 Tage lang
 
 <br>
 
-Das Web-UI von Prometheus ist standardmäßig unter dem Port 9090 verfügbar, also bei lokaler Ausführung: 
+Das Web-UI von Prometheus ist standardmäßig unter dem Port 9090 verfügbar, also bei lokaler Ausführung:
 http://localhost:9090
 
 <br>
