@@ -121,7 +121,7 @@ können auch komplexere Abfragen gestellt werden, z.B.:
 
 <br>
 
-In der Klasse `EigenePrometheusMetrik` wird eine eigene Metrik definiert, die die Gesamtanzahl der Suchvorgänge
+In der Klasse `EigenePrometheusMetriken` wird eine eigene Metrik definiert, die die Gesamtanzahl der Suchvorgänge
 beschreibt. Technischer Name dieser Metrik: `badnews_suchvorgaenge_total`
 
 <br>
