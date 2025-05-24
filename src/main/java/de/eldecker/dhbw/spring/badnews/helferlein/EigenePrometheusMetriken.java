@@ -68,7 +68,7 @@ public class EigenePrometheusMetriken {
         
         _counterSuchvorgaenge = 
                 Counter.builder( "badnews_suchvorgaenge" )
-                       .description( "Anzahl der Suchvorgänge (egal ob erfolgreich oder nicht" )
+                       .description( "Anzahl der Suchvorgänge (egal ob erfolgreich oder nicht)" )
                        .tags( "umgebung", "development",  
                               "funktion", "suche" ) // Tags: Key-Value-Paare
                        .register( meterRegistry );
