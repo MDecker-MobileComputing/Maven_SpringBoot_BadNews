@@ -74,7 +74,7 @@ public class EigenePrometheusMetriken {
                        .register( meterRegistry );
       
         _timeDatenerzeugung = 
-        		Timer.builder ( "badnews_datenerzeugung" )
+        		Timer.builder( "badnews_datenerzeugung" )
         		     .description( "Dauer Datenerzeugung" )
                      .register( meterRegistry );        
     }
